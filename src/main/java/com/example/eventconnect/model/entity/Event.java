@@ -1,5 +1,6 @@
 package com.example.eventconnect.model.entity;
 
+import com.example.eventconnect.model.entity.participant.registration.EventRegistrationParams;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +23,6 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "event_admin_id")
     private User eventAdmin;
+    @OneToMany(mappedBy = "event")
+    private List<EventRegistrationParams> eventRegistrationParams;
 }

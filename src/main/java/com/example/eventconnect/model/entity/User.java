@@ -24,13 +24,13 @@ public class User {
     private String login;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities
                 = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.toString())));
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName().name())));
         return authorities;
     }
 

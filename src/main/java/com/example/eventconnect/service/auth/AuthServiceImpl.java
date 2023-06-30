@@ -54,8 +54,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(AuthRequest authRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
         User user = userService.getUserByLogin(authRequest.getLogin());
+        if (!passwordEncoder.matches(authRequest.getPassword(),user.getPassword())) throw new RuntimeException();
         String accessToken = jwtTokenProvider.createAccessToken(authRequest.getLogin(), authRequest.getPassword());
         String refreshToken = jwtTokenProvider.createRefreshToken(authRequest.getLogin(), authRequest.getPassword());
         return new AuthResponse(

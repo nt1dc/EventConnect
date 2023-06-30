@@ -25,10 +25,10 @@ public class SecurityConfig {
     private final JwtUserDetailsService jwtUserDetailsService;
 
 
-    private static final String AUTH_ENDPOINT = "/api/auth/**";
-    private static final String ADMIN_ENDPOINT = "/api/admin/**";
-    private static final String PARTICIPANT_ENDPOINT = "/api/participant/**";
-    private static final String EVENT_ADMIN_ENDPOINT = "api/event-admin/**";
+    private static final String AUTH_ENDPOINT = "/auth/**";
+    private static final String ADMIN_ENDPOINT = "/admin/**";
+    private static final String PARTICIPANT_ENDPOINT = "/participant/**";
+    private static final String EVENT_ADMIN_ENDPOINT = "/event-admin/**";
 
 
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService) {
@@ -65,7 +65,6 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(jwtUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;

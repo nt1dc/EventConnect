@@ -1,0 +1,11 @@
+services:
+  database:
+    image: postgres
+    container_name: event_connect_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=event_connect
+    command: postgres -p 5432
+    ports:
+      - 5432:5432

@@ -1,0 +1,350 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1688122013794-1
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_event
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: event_admin_id
+                  type: BIGINT
+            tableName: event
+  - changeSet:
+      id: 1688122013794-2
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_eventcontract
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: event_id
+                  type: BIGINT
+              - column:
+                  name: event_admin_id
+                  type: BIGINT
+              - column:
+                  name: status
+                  type: INT
+            tableName: event_contract
+  - changeSet:
+      id: 1688122013794-3
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_registration_parameters_id
+                  type: BIGINT
+            tableName: event_event_registration_parameters
+  - changeSet:
+      id: 1688122013794-4
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: participants_id
+                  type: BIGINT
+            tableName: event_participants
+  - changeSet:
+      id: 1688122013794-5
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_eventregistrationparameter
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: event_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: check_require
+                  type: BOOLEAN
+            tableName: event_registration_parameter
+  - changeSet:
+      id: 1688122013794-6
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_participantregistrationinfo
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: event_id
+                  type: BIGINT
+            tableName: participant_registration_info
+  - changeSet:
+      id: 1688122013794-7
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: participant_registration_info_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: participant_registration_parameter_id
+                  type: BIGINT
+            tableName: participant_registration_info_participant_registration_parameter
+  - changeSet:
+      id: 1688122013794-8
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_participantregistrationparameter
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_answer
+                  type: VARCHAR(255)
+              - column:
+                  name: event_registration_parameter_id
+                  type: BIGINT
+            tableName: participant_registration_parameter
+  - changeSet:
+      id: 1688122013794-9
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: login
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: roles
+                  type: VARCHAR(255)
+            tableName: user
+  - changeSet:
+      id: 1688122013794-10
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: event_registration_parameters_id
+            constraintName: uc_eventeventregistrationparameters_eventregistrationparameters
+            tableName: event_event_registration_parameters
+  - changeSet:
+      id: 1688122013794-11
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: participant_registration_parameter_id
+            constraintName: uc_participantregistrationinfopa_participantregistrationparame
+            tableName: participant_registration_info_participant_registration_parameter
+  - changeSet:
+      id: 1688122013794-12
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_contract
+            constraintName: FK_EVENTCONTRACT_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688122013794-13
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_admin_id
+            baseTableName: event_contract
+            constraintName: FK_EVENTCONTRACT_ON_EVENT_ADMIN
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1688122013794-14
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_registration_parameter
+            constraintName: FK_EVENTREGISTRATIONPARAMETER_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688122013794-15
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_admin_id
+            baseTableName: event
+            constraintName: FK_EVENT_ON_EVENT_ADMIN
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1688122013794-16
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: participant_registration_info
+            constraintName: FK_PARTICIPANTREGISTRATIONINFO_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688122013794-17
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_registration_parameter_id
+            baseTableName: participant_registration_parameter
+            constraintName: FK_PARTICIPANTREGISTRATIONPARAMET_ON_EVENTREGISTRATIONPARAMETER
+            referencedColumnNames: id
+            referencedTableName: event_registration_parameter
+  - changeSet:
+      id: 1688122013794-18
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_event_registration_parameters
+            constraintName: fk_eveeveregpar_on_event
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688122013794-19
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_registration_parameters_id
+            baseTableName: event_event_registration_parameters
+            constraintName: fk_eveeveregpar_on_event_registration_parameter
+            referencedColumnNames: id
+            referencedTableName: event_registration_parameter
+  - changeSet:
+      id: 1688122013794-20
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_participants
+            constraintName: fk_evepar_on_event
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688122013794-21
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: participants_id
+            baseTableName: event_participants
+            constraintName: fk_evepar_on_user
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1688122013794-22
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: participant_registration_info_id
+            baseTableName: participant_registration_info_participant_registration_parameter
+            constraintName: fk_parreginfparregpar_on_participant_registration_info
+            referencedColumnNames: id
+            referencedTableName: participant_registration_info
+  - changeSet:
+      id: 1688122013794-23
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: participant_registration_parameter_id
+            baseTableName: participant_registration_info_participant_registration_parameter
+            constraintName: fk_parreginfparregpar_on_participant_registration_parameter
+            referencedColumnNames: id
+            referencedTableName: participant_registration_parameter
+

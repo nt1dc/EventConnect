@@ -3,13 +3,13 @@ package com.example.eventconnect.model.entity.contract;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 
 @Entity
 public class EventContract {

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-calculator-data-1
+      author: nt1dc
+      changes:
+        - loadData:
+            separator: ","
+            tableName: role
+            file: db/data/roles_data.csv

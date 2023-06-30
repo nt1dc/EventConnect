@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1688122013794-1
+      id: 1688151411421-1
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -25,7 +25,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: event
   - changeSet:
-      id: 1688122013794-2
+      id: 1688151411421-2
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -50,43 +50,7 @@ databaseChangeLog:
                   type: INT
             tableName: event_contract
   - changeSet:
-      id: 1688122013794-3
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                  name: event_id
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: event_registration_parameters_id
-                  type: BIGINT
-            tableName: event_event_registration_parameters
-  - changeSet:
-      id: 1688122013794-4
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                  name: event_id
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: participants_id
-                  type: BIGINT
-            tableName: event_participants
-  - changeSet:
-      id: 1688122013794-5
+      id: 1688151411421-3
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -97,7 +61,32 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: pk_eventregistrationparameter
+                    primaryKeyName: pk_eventparticipant
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: event_id
+                  type: BIGINT
+              - column:
+                  name: participant_status
+                  type: VARCHAR(255)
+            tableName: event_participant
+  - changeSet:
+      id: 1688151411421-4
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_eventregistrationparams
                   name: id
                   type: BIGINT
               - column:
@@ -112,9 +101,27 @@ databaseChangeLog:
               - column:
                   name: check_require
                   type: BOOLEAN
-            tableName: event_registration_parameter
+            tableName: event_registration_params
   - changeSet:
-      id: 1688122013794-6
+      id: 1688151411421-5
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_registration_params_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: participant_registration_params_id
+                  type: BIGINT
+            tableName: event_registration_params_participant_registration_params
+  - changeSet:
+      id: 1688151411421-6
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -125,55 +132,33 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: pk_participantregistrationinfo
+                    primaryKeyName: pk_participantregistrationparams
                   name: id
                   type: BIGINT
               - column:
-                  name: event_id
-                  type: BIGINT
-            tableName: participant_registration_info
-  - changeSet:
-      id: 1688122013794-7
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                  name: participant_registration_info_id
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: participant_registration_parameter_id
-                  type: BIGINT
-            tableName: participant_registration_info_participant_registration_parameter
-  - changeSet:
-      id: 1688122013794-8
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_participantregistrationparameter
-                  name: id
+                  name: participant_id
                   type: BIGINT
               - column:
                   name: user_answer
                   type: VARCHAR(255)
-              - column:
-                  name: event_registration_parameter_id
-                  type: BIGINT
-            tableName: participant_registration_parameter
+            tableName: participant_registration_params
   - changeSet:
-      id: 1688122013794-9
+      id: 1688151411421-7
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_role
+                  name: name
+                  type: VARCHAR(255)
+            tableName: role
+  - changeSet:
+      id: 1688151411421-8
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -193,30 +178,31 @@ databaseChangeLog:
               - column:
                   name: password
                   type: VARCHAR(255)
-              - column:
-                  name: roles
-                  type: VARCHAR(255)
             tableName: user
   - changeSet:
-      id: 1688122013794-10
+      id: 1688151411421-9
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
-        - addUniqueConstraint:
-            columnNames: event_registration_parameters_id
-            constraintName: uc_eventeventregistrationparameters_eventregistrationparameters
-            tableName: event_event_registration_parameters
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_roles
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_roles
+                  name: roles_name
+                  type: VARCHAR(255)
+            tableName: user_roles
   - changeSet:
-      id: 1688122013794-11
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addUniqueConstraint:
-            columnNames: participant_registration_parameter_id
-            constraintName: uc_participantregistrationinfopa_participantregistrationparame
-            tableName: participant_registration_info_participant_registration_parameter
-  - changeSet:
-      id: 1688122013794-12
+      id: 1688151411421-10
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -227,7 +213,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: event
   - changeSet:
-      id: 1688122013794-13
+      id: 1688151411421-11
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -238,18 +224,40 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1688122013794-14
+      id: 1688151411421-12
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: event_id
-            baseTableName: event_registration_parameter
-            constraintName: FK_EVENTREGISTRATIONPARAMETER_ON_EVENT
+            baseTableName: event_participant
+            constraintName: FK_EVENTPARTICIPANT_ON_EVENT
             referencedColumnNames: id
             referencedTableName: event
   - changeSet:
-      id: 1688122013794-15
+      id: 1688151411421-13
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: event_participant
+            constraintName: FK_EVENTPARTICIPANT_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user
+  - changeSet:
+      id: 1688151411421-14
+      author: nt1dc (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_registration_params
+            constraintName: FK_EVENTREGISTRATIONPARAMS_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: event
+  - changeSet:
+      id: 1688151411421-15
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -260,91 +268,58 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
   - changeSet:
-      id: 1688122013794-16
+      id: 1688151411421-16
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: event_id
-            baseTableName: participant_registration_info
-            constraintName: FK_PARTICIPANTREGISTRATIONINFO_ON_EVENT
+            baseColumnNames: participant_id
+            baseTableName: participant_registration_params
+            constraintName: FK_PARTICIPANTREGISTRATIONPARAMS_ON_PARTICIPANT
             referencedColumnNames: id
-            referencedTableName: event
+            referencedTableName: event_participant
   - changeSet:
-      id: 1688122013794-17
+      id: 1688151411421-17
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: event_registration_parameter_id
-            baseTableName: participant_registration_parameter
-            constraintName: FK_PARTICIPANTREGISTRATIONPARAMET_ON_EVENTREGISTRATIONPARAMETER
+            baseColumnNames: event_registration_params_id
+            baseTableName: event_registration_params_participant_registration_params
+            constraintName: fk_everegparparregpar_on_event_registration_params
             referencedColumnNames: id
-            referencedTableName: event_registration_parameter
+            referencedTableName: event_registration_params
   - changeSet:
-      id: 1688122013794-18
+      id: 1688151411421-18
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: event_id
-            baseTableName: event_event_registration_parameters
-            constraintName: fk_eveeveregpar_on_event
+            baseColumnNames: participant_registration_params_id
+            baseTableName: event_registration_params_participant_registration_params
+            constraintName: fk_everegparparregpar_on_participant_registration_params
             referencedColumnNames: id
-            referencedTableName: event
+            referencedTableName: participant_registration_params
   - changeSet:
-      id: 1688122013794-19
+      id: 1688151411421-19
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: event_registration_parameters_id
-            baseTableName: event_event_registration_parameters
-            constraintName: fk_eveeveregpar_on_event_registration_parameter
-            referencedColumnNames: id
-            referencedTableName: event_registration_parameter
+            baseColumnNames: roles_name
+            baseTableName: user_roles
+            constraintName: fk_userol_on_role
+            referencedColumnNames: name
+            referencedTableName: role
   - changeSet:
-      id: 1688122013794-20
+      id: 1688151411421-20
       author: nt1dc (generated)
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: event_id
-            baseTableName: event_participants
-            constraintName: fk_evepar_on_event
-            referencedColumnNames: id
-            referencedTableName: event
-  - changeSet:
-      id: 1688122013794-21
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: participants_id
-            baseTableName: event_participants
-            constraintName: fk_evepar_on_user
+            baseColumnNames: user_id
+            baseTableName: user_roles
+            constraintName: fk_userol_on_user
             referencedColumnNames: id
             referencedTableName: user
-  - changeSet:
-      id: 1688122013794-22
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: participant_registration_info_id
-            baseTableName: participant_registration_info_participant_registration_parameter
-            constraintName: fk_parreginfparregpar_on_participant_registration_info
-            referencedColumnNames: id
-            referencedTableName: participant_registration_info
-  - changeSet:
-      id: 1688122013794-23
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: participant_registration_parameter_id
-            baseTableName: participant_registration_info_participant_registration_parameter
-            constraintName: fk_parreginfparregpar_on_participant_registration_parameter
-            referencedColumnNames: id
-            referencedTableName: participant_registration_parameter
 

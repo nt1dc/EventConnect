@@ -1,11 +1,28 @@
+server:
+  servlet:
+    context-path: /api
 spring:
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:event_connect}
     username: ${DATABASE_USERNAME:admin}
     password: ${DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
+
   liquibase:
+#    enabled: false
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
   jpa:
     generate-ddl: false
+
+
+
+jwt.header: Authorization
+jwt.secret: topsecrettopsecrettopsecrettopsecret
+jwt.access.expiration: 300
+jwt.refresh.expiration: 1500
+
+
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+

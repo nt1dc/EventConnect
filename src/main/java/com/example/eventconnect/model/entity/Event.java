@@ -1,16 +1,16 @@
 package com.example.eventconnect.model.entity;
 
-import com.example.eventconnect.model.entity.participant.registration.EventRegistrationParameter;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
+
 @Entity
 
 public class Event {
@@ -22,9 +22,4 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "event_admin_id")
     private User eventAdmin;
-    @OneToMany
-    private List<EventRegistrationParameter> eventRegistrationParameters;
-    @ManyToMany
-    private List<User> participants;
-
 }

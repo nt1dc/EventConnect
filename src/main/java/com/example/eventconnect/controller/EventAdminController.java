@@ -1,6 +1,6 @@
 package com.example.eventconnect.controller;
 
-import com.example.eventconnect.model.dto.EventDto;
+import com.example.eventconnect.model.dto.EventCreateRequest;
 import com.example.eventconnect.service.EventAdminService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +16,8 @@ public class EventAdminController {
     }
 
     @PostMapping("/event")
-    public void createEvent(@RequestBody EventDto eventDto, Principal principal) {
-        eventAdminService.createEvent(eventDto, principal.getName());
+    public void createEvent(@RequestBody EventCreateRequest eventCreateRequest, Principal principal) {
+        eventAdminService.createEvent(eventCreateRequest, principal.getName());
     }
 
     @GetMapping("/ping")

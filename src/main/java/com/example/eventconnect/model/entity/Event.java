@@ -28,6 +28,4 @@ public class Event {
     private List<EventRegistrationParams> eventRegistrationParams = new ArrayList<>();
     @Enumerated(value = EnumType.STRING)
     private EventStatus eventStatus;
-
-
 }

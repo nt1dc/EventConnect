@@ -29,6 +29,7 @@ public class SecurityConfig {
     private static final String ADMIN_ENDPOINT = "/admin/**";
     private static final String PARTICIPANT_ENDPOINT = "/participant/**";
     private static final String EVENT_ADMIN_ENDPOINT = "/event-admin/**";
+    private static final String EVENT_INFO_ENDPOINT = "/event";
 
 
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService) {
@@ -46,6 +47,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(EVENT_INFO_ENDPOINT).permitAll()
                         .requestMatchers(AUTH_ENDPOINT).permitAll()
                         .requestMatchers(PARTICIPANT_ENDPOINT).hasAuthority(RoleEnum.PARTICIPANT.name())
                         .requestMatchers(ADMIN_ENDPOINT).hasAuthority(RoleEnum.ADMIN.name())

@@ -1,6 +1,6 @@
 package com.example.eventconnect.service;
 
-import com.example.eventconnect.model.dto.EventDto;
+import com.example.eventconnect.model.dto.EventCreateRequest;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.User;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.eventconnect.model.entity.EventStatus.*;
 
 @Service
 @Transactional
@@ -32,20 +30,20 @@ public class EventAdminServiceImpl implements EventAdminService {
 
 
     @Override
-    public void createEvent(EventDto eventDto, String userLogin) {
+    public void createEvent(EventCreateRequest eventCreateRequest, String userLogin) {
         User user = userService.getUserByLogin(userLogin);
         Event event = new Event();
-        List<EventRegistrationParams> eventRegistrationParams = eventDto.getEventRegistrationParams().stream()
+        List<EventRegistrationParams> eventRegistrationParams = eventCreateRequest.getEventRegistrationParams().stream()
                 .map(element -> {
                     EventRegistrationParams params = modelMapper.map(element, EventRegistrationParams.class);
                     params.setEvent(event);
                     return params;
                 })
                 .collect(Collectors.toList());
-        event.setName(eventDto.getName());
+        event.setName(eventCreateRequest.getName());
         event.setEventAdmin(user);
         event.setEventRegistrationParams(eventRegistrationParams);
-        event.setDescription(eventDto.getDescription());
+        event.setDescription(eventCreateRequest.getDescription());
         eventRepository.save(event);
         eventContractService.createContract(event, EventContractStatus.CREATED);
     }

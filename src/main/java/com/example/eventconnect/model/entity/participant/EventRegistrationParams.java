@@ -1,4 +1,4 @@
-package com.example.eventconnect.model.entity.participant.registration;
+package com.example.eventconnect.model.entity.participant;
 
 import com.example.eventconnect.model.entity.Event;
 import jakarta.persistence.*;
@@ -24,6 +24,4 @@ public class EventRegistrationParams {
     private String name;
     private String description;
     private Boolean checkRequire;
-    @ManyToMany
-    private List<ParticipantRegistrationParams> participantRegistrationParams;
 }

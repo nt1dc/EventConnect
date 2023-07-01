@@ -4,14 +4,14 @@ import com.example.eventconnect.model.dto.EventCreateRequest;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.User;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
-import com.example.eventconnect.model.entity.participant.registration.EventRegistrationParams;
+import com.example.eventconnect.model.entity.participant.EventRegistrationParams;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.service.auth.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +33,13 @@ public class EventAdminServiceImpl implements EventAdminService {
     public void createEvent(EventCreateRequest eventCreateRequest, String userLogin) {
         User user = userService.getUserByLogin(userLogin);
         Event event = new Event();
-        List<EventRegistrationParams> eventRegistrationParams = eventCreateRequest.getEventRegistrationParams().stream()
+        Set<EventRegistrationParams> eventRegistrationParams = eventCreateRequest.getEventRegistrationParams().stream()
                 .map(element -> {
                     EventRegistrationParams params = modelMapper.map(element, EventRegistrationParams.class);
                     params.setEvent(event);
                     return params;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         event.setName(eventCreateRequest.getName());
         event.setEventAdmin(user);
         event.setEventRegistrationParams(eventRegistrationParams);

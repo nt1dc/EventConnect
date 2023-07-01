@@ -1,7 +1,7 @@
 package com.example.eventconnect.controller;
 
 import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
-import com.example.eventconnect.model.dto.ParticipantEventPRegistrationParamDto;
+import com.example.eventconnect.model.dto.ParticipantEventParamDto;
 import com.example.eventconnect.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +24,11 @@ public class ParticipantController {
 
     @PostMapping("/event/{eventId}/registration")
     public void postRegistrationParameters(@PathVariable Long eventId,
-                                           @RequestBody List<ParticipantEventPRegistrationParamDto> participantEventPRegistrationParamDtos
+                                           @RequestBody List<ParticipantEventParamDto> participantEventParamDtos
             , Principal principal
     ) {
         System.out.println(principal.getName());
-        eventService.registerParticipant(eventId, participantEventPRegistrationParamDtos,
+        eventService.registerParticipant(eventId, participantEventParamDtos,
                 principal.getName());
     }
 }

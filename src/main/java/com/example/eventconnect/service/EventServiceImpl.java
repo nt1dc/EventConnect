@@ -2,7 +2,7 @@ package com.example.eventconnect.service;
 
 import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.EventResponse;
-import com.example.eventconnect.model.dto.ParticipantEventPRegistrationParamDto;
+import com.example.eventconnect.model.dto.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.EventStatus;
 import com.example.eventconnect.model.entity.User;
@@ -14,15 +14,18 @@ import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.service.auth.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper = new ModelMapper();
@@ -53,42 +56,66 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void registerParticipant(Long eventId, List<ParticipantEventPRegistrationParamDto> participantEventPRegistrationParamsDtoDto, String login) {
+    public void registerParticipant(Long eventId, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto, String login) {
         Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
         User participantUser = userService.getUserByLogin(login);
-        if (eventParticipantRepository.existsByEventAndAndUser(event, participantUser))
-            throw new RuntimeException("already registered");
 
-        if (event.getEventRegistrationParams().size() < participantEventPRegistrationParamsDtoDto.size())
-            throw new RuntimeException("invalid params count");
+        if (eventParticipantRepository.existsByEventAndAndUser(event, participantUser)) {
+            throw new IllegalStateException("Participant already registered");
+        }
 
-        boolean allParamsPresent = event.getEventRegistrationParams().stream()
-                .map(EventRegistrationParams::getId)
-                .collect(Collectors.toSet())
-                .containsAll(
-                        participantEventPRegistrationParamsDtoDto
-                                .stream()
-                                .map(ParticipantEventPRegistrationParamDto::getParamId)
-                                .collect(Collectors.toSet())
-                );
-        if (!allParamsPresent) throw new RuntimeException("not all params present");
-        EventParticipant participant = EventParticipant.builder()
-                .user(participantUser)
-                .event(event)
-                .participantStatus(ParticipantStatus.CREATED)
-                .build();
+        if (event.getEventRegistrationParams().size() < participantEventPRegistrationParamsDtoDto.size()) {
+            throw new IllegalArgumentException("Invalid parameter count");
+        }
 
-        Map<Long, EventRegistrationParams> registrationParamsMap = event.getEventRegistrationParams().stream()
-                .collect(Collectors.toMap(EventRegistrationParams::getId, v -> v));
+        boolean allParamsPresent = checkIfAllParamsPresent(event, participantEventPRegistrationParamsDtoDto);
+        boolean needsEventAdminCheck = event.getEventRegistrationParams().stream().anyMatch(EventRegistrationParams::getCheckRequire);
 
-        Set<ParticipantRegistrationParams> participantRegistrationParams = participantEventPRegistrationParamsDtoDto.stream()
-                .map(userParam -> ParticipantRegistrationParams.builder()
-                        .participant(participant)
-                        .userAnswer(userParam.getUserAnswer())
-                        .eventRegistrationParams(registrationParamsMap.get(userParam.getParamId()))
-                        .build()
-                ).collect(Collectors.toSet());
-        participant.setRegistrationParams(participantRegistrationParams);
+        ParticipantStatus participantStatus = needsEventAdminCheck ? ParticipantStatus.CREATED : ParticipantStatus.APPROVED;
+
+        if (!allParamsPresent) {
+            throw new IllegalArgumentException("Not all parameters are present");
+        }
+
+        EventParticipant participant = createParticipant(participantUser, event, participantStatus, participantEventPRegistrationParamsDtoDto);
         eventParticipantRepository.save(participant);
     }
+
+    private boolean checkIfAllParamsPresent(Event event, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
+        Set<Long> requiredParamIds = event.getEventRegistrationParams().stream()
+                .map(EventRegistrationParams::getId)
+                .collect(Collectors.toSet());
+
+        Set<Long> participantParamIds = participantEventPRegistrationParamsDtoDto.stream()
+                .map(ParticipantEventParamDto::getParamId)
+                .collect(Collectors.toSet());
+
+        return requiredParamIds.containsAll(participantParamIds);
+    }
+
+    private EventParticipant createParticipant(User participantUser, Event event, ParticipantStatus participantStatus, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
+        Map<Long, EventRegistrationParams> registrationParamsMap = event.getEventRegistrationParams().stream()
+                .collect(Collectors.toMap(EventRegistrationParams::getId, Function.identity()));
+
+        Set<ParticipantRegistrationParams> participantRegistrationParams = participantEventPRegistrationParamsDtoDto.stream()
+                .map(userParam -> createParticipantRegistrationParam(userParam, registrationParamsMap))
+                .collect(Collectors.toSet());
+
+        return EventParticipant.builder()
+                .user(participantUser)
+                .event(event)
+                .participantStatus(participantStatus)
+                .registrationParams(participantRegistrationParams)
+                .build();
+    }
+
+    private ParticipantRegistrationParams createParticipantRegistrationParam(ParticipantEventParamDto userParam, Map<Long, EventRegistrationParams> registrationParamsMap) {
+        EventRegistrationParams eventRegistrationParams = registrationParamsMap.get(userParam.getParamId());
+
+        return ParticipantRegistrationParams.builder()
+                .userAnswer(userParam.getUserAnswer())
+                .eventRegistrationParams(eventRegistrationParams)
+                .build();
+    }
+
 }

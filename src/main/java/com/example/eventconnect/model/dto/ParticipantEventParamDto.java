@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ParticipantEventPRegistrationParamDto {
+public class ParticipantEventParamDto {
     private Long paramId;
     private String userAnswer;
 }

@@ -1,8 +1,6 @@
 package com.example.eventconnect.controller;
 
-import com.example.eventconnect.model.dto.EventRegistrationParametersResponse;
-import com.example.eventconnect.model.dto.EventRegistrationParamsDto;
-import com.example.eventconnect.model.entity.participant.registration.EventRegistrationParams;
+import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
 import com.example.eventconnect.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +16,7 @@ public class ParticipantController {
     }
 
     @GetMapping("/event/{eventId}/registration")
-    public List<EventRegistrationParametersResponse> getRegistrationParameters(@PathVariable Long eventId){
+    public List<EventRegistrationParamsResponse> getRegistrationParameters(@PathVariable Long eventId){
         return eventService.getRegistrationParameters(eventId);
     }
     @PostMapping("/event/{eventId}/registration")

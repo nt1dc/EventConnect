@@ -23,6 +23,8 @@ jwt.access.expiration: 30000
 jwt.refresh.expiration: 1500
 
 
-logging.level.org.hibernate.SQL: DEBUG
-logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
 

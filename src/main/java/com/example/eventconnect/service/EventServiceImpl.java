@@ -7,8 +7,8 @@ import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.EventStatus;
 import com.example.eventconnect.model.entity.User;
 import com.example.eventconnect.model.entity.participant.Participant;
-import com.example.eventconnect.model.entity.participant.EventRegistrationParams;
-import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParams;
+import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParam;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.repository.EventRepository;
@@ -73,12 +73,13 @@ public class EventServiceImpl implements EventService {
             throw new IllegalArgumentException("Not all parameters are present");
         }
 
-        boolean needsEventAdminCheck = event.getEventRegistrationParams().stream().anyMatch(EventRegistrationParams::getCheckRequire);
+        boolean needsEventAdminCheck = event.getEventRegistrationParams().stream().anyMatch(EventRegistrationParam::getCheckRequire);
 
         ParticipationStatus participationStatus = needsEventAdminCheck ? ParticipationStatus.CREATED : ParticipationStatus.APPROVED;
 
 
         Participant participant = createParticipant(participantUser, event, participationStatus, participantEventPRegistrationParamsDtoDto);
+
         eventParticipantRepository.save(participant);
     }
 
@@ -89,13 +90,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event getEventById(Long eventId) {
-        eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
-        return null;
+        return eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
     }
 
     private boolean checkIfAllParamsPresent(Event event, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
         Set<Long> requiredParamIds = event.getEventRegistrationParams().stream()
-                .map(EventRegistrationParams::getId)
+                .map(EventRegistrationParam::getId)
                 .collect(Collectors.toSet());
 
         Set<Long> participantParamIds = participantEventPRegistrationParamsDtoDto.stream()
@@ -106,27 +106,27 @@ public class EventServiceImpl implements EventService {
     }
 
     private Participant createParticipant(User participantUser, Event event, ParticipationStatus participationStatus, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
-        Map<Long, EventRegistrationParams> registrationParamsMap = event.getEventRegistrationParams().stream()
-                .collect(Collectors.toMap(EventRegistrationParams::getId, Function.identity()));
+        Participant participant = new Participant();
+        Map<Long, EventRegistrationParam> registrationParamsMap = event.getEventRegistrationParams().stream()
+                .collect(Collectors.toMap(EventRegistrationParam::getId, Function.identity()));
 
-        Set<ParticipantRegistrationParams> participantRegistrationParams = participantEventPRegistrationParamsDtoDto.stream()
-                .map(userParam -> createParticipantRegistrationParam(userParam, registrationParamsMap))
+        Set<ParticipantRegistrationParam> participantRegistrationParams = participantEventPRegistrationParamsDtoDto.stream()
+                .map(userParam -> createParticipantRegistrationParam(userParam, registrationParamsMap, participant))
                 .collect(Collectors.toSet());
-
-        return Participant.builder()
-                .user(participantUser)
-                .event(event)
-                .participationStatus(participationStatus)
-                .registrationParams(participantRegistrationParams)
-                .build();
+        participant.setUser(participantUser);
+        participant.setEvent(event);
+        participant.setParticipationStatus(participationStatus);
+        participant.setRegistrationParams(participantRegistrationParams);
+        return participant;
     }
 
-    private ParticipantRegistrationParams createParticipantRegistrationParam(ParticipantEventParamDto userParam, Map<Long, EventRegistrationParams> registrationParamsMap) {
-        EventRegistrationParams eventRegistrationParams = registrationParamsMap.get(userParam.getParamId());
+    private ParticipantRegistrationParam createParticipantRegistrationParam(ParticipantEventParamDto userParam, Map<Long, EventRegistrationParam> registrationParamsMap, Participant participant) {
+        EventRegistrationParam eventRegistrationParam = registrationParamsMap.get(userParam.getParamId());
 
-        return ParticipantRegistrationParams.builder()
+        return ParticipantRegistrationParam.builder()
                 .userAnswer(userParam.getUserAnswer())
-                .eventRegistrationParams(eventRegistrationParams)
+                .eventRegistrationParam(eventRegistrationParam)
+                .participant(participant)
                 .build();
     }
 

@@ -11,7 +11,7 @@ import lombok.*;
 
 
 @Entity
-public class ParticipantRegistrationParams {
+public class ParticipantRegistrationParam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +21,6 @@ public class ParticipantRegistrationParams {
     private String userAnswer;
 
     @ManyToOne
-    @JoinColumn(name = "event_registration_params_id")
-    private EventRegistrationParams eventRegistrationParams;
+    @JoinColumn(name = "event_registration_param_id")
+    private EventRegistrationParam eventRegistrationParam;
 }

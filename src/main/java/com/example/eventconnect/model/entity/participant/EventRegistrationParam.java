@@ -4,8 +4,6 @@ import com.example.eventconnect.model.entity.Event;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-public class EventRegistrationParams {
+public class EventRegistrationParam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

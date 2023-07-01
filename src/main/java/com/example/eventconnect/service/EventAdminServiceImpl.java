@@ -1,11 +1,13 @@
 package com.example.eventconnect.service;
 
 import com.example.eventconnect.model.dto.EventCreateRequest;
+import com.example.eventconnect.model.dto.ParticipantAnswersResponse;
+import com.example.eventconnect.model.dto.ParticipantAnwerWithQuestionDto;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.User;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.participant.Participant;
-import com.example.eventconnect.model.entity.participant.EventRegistrationParams;
+import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.service.auth.UserService;
@@ -13,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,9 +40,9 @@ public class EventAdminServiceImpl implements EventAdminService {
     public void createEvent(EventCreateRequest eventCreateRequest, String userLogin) {
         User user = userService.getUserByLogin(userLogin);
         Event event = new Event();
-        Set<EventRegistrationParams> eventRegistrationParams = eventCreateRequest.getEventRegistrationParams().stream()
+        Set<EventRegistrationParam> eventRegistrationParams = eventCreateRequest.getEventRegistrationParams().stream()
                 .map(element -> {
-                    EventRegistrationParams params = modelMapper.map(element, EventRegistrationParams.class);
+                    EventRegistrationParam params = modelMapper.map(element, EventRegistrationParam.class);
                     params.setEvent(event);
                     return params;
                 })
@@ -61,5 +64,22 @@ public class EventAdminServiceImpl implements EventAdminService {
         Participant participant = eventParticipantRepository.findByEventAndAndUser(event, eventAdmin);
         participant.setParticipationStatus(participationStatus);
         eventParticipantRepository.save(participant);
+    }
+
+    @Override
+    public List<ParticipantAnswersResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName) {
+        Event event = eventService.getEventById(eventId);
+        return event.getParticipants().stream().map(
+                participant -> new ParticipantAnswersResponse(
+                        participant.getUser().getId(),
+                        participant.getUser().getLogin(),
+                        participant.getRegistrationParams()
+                                .stream().map(participantRegistrationParams ->
+                                        new ParticipantAnwerWithQuestionDto(
+                                                participantRegistrationParams.getEventRegistrationParam().getName(),
+                                                participantRegistrationParams.getEventRegistrationParam().getDescription(),
+                                                participantRegistrationParams.getUserAnswer()
+                                        )).collect(Collectors.toSet()))).toList();
+
     }
 }

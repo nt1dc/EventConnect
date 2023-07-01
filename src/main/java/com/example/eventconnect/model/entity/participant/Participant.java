@@ -19,7 +19,7 @@ public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -29,7 +29,6 @@ public class Participant {
 
     @Enumerated(value = EnumType.STRING)
     private ParticipationStatus participationStatus;
-    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<ParticipantRegistrationParams> registrationParams = new HashSet<>();
-
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ParticipantRegistrationParam> registrationParams;
 }

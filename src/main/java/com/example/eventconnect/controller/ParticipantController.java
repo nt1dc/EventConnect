@@ -23,12 +23,10 @@ public class ParticipantController {
     }
 
     @PostMapping("/events/{eventId}/registration")
-    public void postRegistrationParameters(@PathVariable Long eventId,
-                                           @RequestBody List<ParticipantEventParamDto> participantEventParamDtos
-            , Principal principal
-    ) {
-        System.out.println(principal.getName());
-        eventService.registerParticipant(eventId, participantEventParamDtos,
-                principal.getName());
+    public void postRegistrationParameters(
+            @PathVariable Long eventId,
+            @RequestBody List<ParticipantEventParamDto> participantEventParamDtos,
+            Principal principal) {
+        eventService.registerParticipant(eventId, participantEventParamDtos, principal.getName());
     }
 }

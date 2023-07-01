@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class UserInfoResponse {
-    private Long id;
     private String login;
 }

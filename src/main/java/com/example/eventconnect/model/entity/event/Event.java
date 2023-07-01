@@ -1,7 +1,8 @@
-package com.example.eventconnect.model.entity;
+package com.example.eventconnect.model.entity.event;
 
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
+import com.example.eventconnect.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

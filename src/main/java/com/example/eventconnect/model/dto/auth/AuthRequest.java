@@ -1,9 +1,6 @@
 package com.example.eventconnect.model.dto.auth;
 
-import com.example.eventconnect.model.entity.Role;
 import lombok.Data;
-
-import java.util.Set;
 
 @Data
 public class AuthRequest {

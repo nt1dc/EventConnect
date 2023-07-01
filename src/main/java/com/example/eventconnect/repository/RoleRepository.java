@@ -1,7 +1,7 @@
 package com.example.eventconnect.repository;
 
-import com.example.eventconnect.model.entity.Role;
-import com.example.eventconnect.model.entity.RoleEnum;
+import com.example.eventconnect.model.entity.user.Role;
+import com.example.eventconnect.model.entity.user.RoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

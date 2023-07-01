@@ -1,5 +1,6 @@
-package com.example.eventconnect.model.entity;
+package com.example.eventconnect.model.entity.user;
 
+import com.example.eventconnect.model.entity.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

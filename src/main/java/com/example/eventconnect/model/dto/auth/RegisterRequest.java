@@ -1,7 +1,6 @@
 package com.example.eventconnect.model.dto.auth;
 
-import com.example.eventconnect.model.entity.Role;
-import com.example.eventconnect.model.entity.RoleEnum;
+import com.example.eventconnect.model.entity.user.RoleEnum;
 import lombok.*;
 
 @Getter

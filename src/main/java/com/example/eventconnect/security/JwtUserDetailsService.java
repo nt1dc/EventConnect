@@ -2,7 +2,7 @@ package com.example.eventconnect.security;
 
 
 
-import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.service.auth.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

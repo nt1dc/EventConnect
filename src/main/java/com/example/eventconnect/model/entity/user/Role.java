@@ -1,4 +1,4 @@
-package com.example.eventconnect.model.entity;
+package com.example.eventconnect.model.entity.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

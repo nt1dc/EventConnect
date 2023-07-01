@@ -1,8 +1,8 @@
 package com.example.eventconnect.service;
 
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
-import com.example.eventconnect.model.entity.Event;
-import com.example.eventconnect.model.entity.EventStatus;
+import com.example.eventconnect.model.entity.event.Event;
+import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.repository.EventContractRepository;

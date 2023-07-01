@@ -1,6 +1,6 @@
 package com.example.eventconnect.model.dto.auth;
 
-import com.example.eventconnect.model.entity.Role;
+import com.example.eventconnect.model.entity.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

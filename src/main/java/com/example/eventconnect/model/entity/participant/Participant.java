@@ -1,11 +1,10 @@
 package com.example.eventconnect.model.entity.participant;
 
-import com.example.eventconnect.model.entity.Event;
-import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.event.Event;
+import com.example.eventconnect.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter

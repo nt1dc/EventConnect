@@ -1,8 +1,7 @@
 package com.example.eventconnect.repository;
 
-import com.example.eventconnect.model.dto.EventResponse;
-import com.example.eventconnect.model.entity.Event;
-import com.example.eventconnect.model.entity.EventStatus;
+import com.example.eventconnect.model.entity.event.Event;
+import com.example.eventconnect.model.entity.event.EventStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

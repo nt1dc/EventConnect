@@ -1,6 +1,6 @@
 package com.example.eventconnect.service.auth;
 
-import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.user.User;
 
 public interface UserService {
 

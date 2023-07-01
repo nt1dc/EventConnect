@@ -1,7 +1,7 @@
 package com.example.eventconnect.security;
 
 
-import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.user.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

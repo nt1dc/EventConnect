@@ -1,6 +1,6 @@
 package com.example.eventconnect.model.dto;
 
-import com.example.eventconnect.model.entity.EventStatus;
+import com.example.eventconnect.model.entity.event.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

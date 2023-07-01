@@ -1,7 +1,6 @@
 package com.example.eventconnect.model.entity.contract;
 
-import com.example.eventconnect.model.entity.Event;
-import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
 

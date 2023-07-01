@@ -1,7 +1,6 @@
 package com.example.eventconnect.security;
 
-import com.example.eventconnect.model.entity.Role;
-import com.example.eventconnect.model.entity.RoleEnum;
+import com.example.eventconnect.model.entity.user.RoleEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

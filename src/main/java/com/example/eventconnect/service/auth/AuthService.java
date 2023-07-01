@@ -1,8 +1,8 @@
 package com.example.eventconnect.service.auth;
 
-import com.example.eventconnect.model.dto.AuthRequest;
-import com.example.eventconnect.model.dto.AuthResponse;
-import com.example.eventconnect.model.dto.RegisterRequest;
+import com.example.eventconnect.model.dto.auth.AuthRequest;
+import com.example.eventconnect.model.dto.auth.AuthResponse;
+import com.example.eventconnect.model.dto.auth.RegisterRequest;
 
 
 public interface AuthService {

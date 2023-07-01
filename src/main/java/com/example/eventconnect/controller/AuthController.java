@@ -1,8 +1,8 @@
 package com.example.eventconnect.controller;
 
-import com.example.eventconnect.model.dto.AuthRequest;
-import com.example.eventconnect.model.dto.AuthResponse;
-import com.example.eventconnect.model.dto.RegisterRequest;
+import com.example.eventconnect.model.dto.auth.AuthRequest;
+import com.example.eventconnect.model.dto.auth.AuthResponse;
+import com.example.eventconnect.model.dto.auth.RegisterRequest;
 import com.example.eventconnect.service.auth.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ public class AuthController {
         return authService.login(authRequest);
     }
 
-    @PostMapping("/register1")
+    @PostMapping("/register")
     public void register(@RequestBody RegisterRequest registerRequest) {
         authService.register(registerRequest);
     }

@@ -4,6 +4,7 @@ import com.example.eventconnect.model.entity.participant.registration.EventRegis
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,9 +21,13 @@ public class Event {
     private Long id;
     private String name;
     private String description;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_admin_id")
     private User eventAdmin;
-    @OneToMany(mappedBy = "event")
-    private List<EventRegistrationParams> eventRegistrationParams;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventRegistrationParams> eventRegistrationParams = new ArrayList<>();
+    @Enumerated(value = EnumType.STRING)
+    private EventStatus eventStatus;
+
+
 }

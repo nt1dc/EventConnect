@@ -19,7 +19,7 @@ spring:
 
 jwt.header: Authorization
 jwt.secret: topsecrettopsecrettopsecrettopsecret
-jwt.access.expiration: 300
+jwt.access.expiration: 30000
 jwt.refresh.expiration: 1500
 
 

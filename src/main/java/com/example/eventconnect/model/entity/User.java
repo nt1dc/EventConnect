@@ -21,9 +21,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
+    @Column(unique = true)
     private String login;
     private String password;
-
+    @OneToMany(mappedBy = "eventAdmin")
+    private Set<Event> eventAdmin;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 

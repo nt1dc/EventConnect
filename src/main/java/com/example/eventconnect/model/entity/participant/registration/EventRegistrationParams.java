@@ -18,7 +18,7 @@ public class EventRegistrationParams {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "event_id")
     private Event event;
     private String name;

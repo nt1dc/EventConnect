@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 
 @Entity
-public class EventParticipant {
+public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +28,7 @@ public class EventParticipant {
     private Event event;
 
     @Enumerated(value = EnumType.STRING)
-    private ParticipantStatus participantStatus;
+    private ParticipationStatus participationStatus;
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<ParticipantRegistrationParams> registrationParams = new HashSet<>();
 

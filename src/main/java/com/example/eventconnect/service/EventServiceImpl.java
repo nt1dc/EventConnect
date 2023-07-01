@@ -6,10 +6,10 @@ import com.example.eventconnect.model.dto.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.Event;
 import com.example.eventconnect.model.entity.EventStatus;
 import com.example.eventconnect.model.entity.User;
-import com.example.eventconnect.model.entity.participant.EventParticipant;
+import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParams;
 import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParams;
-import com.example.eventconnect.model.entity.participant.ParticipantStatus;
+import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.service.auth.UserService;
@@ -69,16 +69,28 @@ public class EventServiceImpl implements EventService {
         }
 
         boolean allParamsPresent = checkIfAllParamsPresent(event, participantEventPRegistrationParamsDtoDto);
-        boolean needsEventAdminCheck = event.getEventRegistrationParams().stream().anyMatch(EventRegistrationParams::getCheckRequire);
-
-        ParticipantStatus participantStatus = needsEventAdminCheck ? ParticipantStatus.CREATED : ParticipantStatus.APPROVED;
-
         if (!allParamsPresent) {
             throw new IllegalArgumentException("Not all parameters are present");
         }
 
-        EventParticipant participant = createParticipant(participantUser, event, participantStatus, participantEventPRegistrationParamsDtoDto);
+        boolean needsEventAdminCheck = event.getEventRegistrationParams().stream().anyMatch(EventRegistrationParams::getCheckRequire);
+
+        ParticipationStatus participationStatus = needsEventAdminCheck ? ParticipationStatus.CREATED : ParticipationStatus.APPROVED;
+
+
+        Participant participant = createParticipant(participantUser, event, participationStatus, participantEventPRegistrationParamsDtoDto);
         eventParticipantRepository.save(participant);
+    }
+
+    @Override
+    public void saveEvent(Event event) {
+        eventRepository.save(event);
+    }
+
+    @Override
+    public Event getEventById(Long eventId) {
+        eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
+        return null;
     }
 
     private boolean checkIfAllParamsPresent(Event event, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
@@ -93,7 +105,7 @@ public class EventServiceImpl implements EventService {
         return requiredParamIds.containsAll(participantParamIds);
     }
 
-    private EventParticipant createParticipant(User participantUser, Event event, ParticipantStatus participantStatus, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
+    private Participant createParticipant(User participantUser, Event event, ParticipationStatus participationStatus, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
         Map<Long, EventRegistrationParams> registrationParamsMap = event.getEventRegistrationParams().stream()
                 .collect(Collectors.toMap(EventRegistrationParams::getId, Function.identity()));
 
@@ -101,10 +113,10 @@ public class EventServiceImpl implements EventService {
                 .map(userParam -> createParticipantRegistrationParam(userParam, registrationParamsMap))
                 .collect(Collectors.toSet());
 
-        return EventParticipant.builder()
+        return Participant.builder()
                 .user(participantUser)
                 .event(event)
-                .participantStatus(participantStatus)
+                .participationStatus(participationStatus)
                 .registrationParams(participantRegistrationParams)
                 .build();
     }

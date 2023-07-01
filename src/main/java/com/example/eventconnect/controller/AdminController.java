@@ -13,7 +13,7 @@ public class AdminController {
         this.eventContractService = eventContractService;
     }
 
-    @PutMapping("/event-contract/{contractId}/status")
+    @PutMapping("/event-contracts/{contractId}/status")
     public void updateEventContractStatus(@PathVariable Long contractId, @RequestBody EventContractStatus eventContractStatus) {
         eventContractService.updateContractStatus(contractId, eventContractStatus);
     }

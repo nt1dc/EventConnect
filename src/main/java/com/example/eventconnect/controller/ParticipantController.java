@@ -17,12 +17,12 @@ public class ParticipantController {
         this.eventService = eventService;
     }
 
-    @GetMapping("/event/{eventId}/registration")
+    @GetMapping("/events/{eventId}/registration")
     public List<EventRegistrationParamsResponse> getRegistrationParameters(@PathVariable Long eventId) {
         return eventService.getRegistrationParameters(eventId);
     }
 
-    @PostMapping("/event/{eventId}/registration")
+    @PostMapping("/events/{eventId}/registration")
     public void postRegistrationParameters(@PathVariable Long eventId,
                                            @RequestBody List<ParticipantEventParamDto> participantEventParamDtos
             , Principal principal

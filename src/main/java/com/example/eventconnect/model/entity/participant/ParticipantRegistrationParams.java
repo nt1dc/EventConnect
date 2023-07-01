@@ -17,7 +17,7 @@ public class ParticipantRegistrationParams {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "participant_id")
-    private EventParticipant participant;
+    private Participant participant;
     private String userAnswer;
 
     @ManyToOne

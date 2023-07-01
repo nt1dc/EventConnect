@@ -1,6 +1,7 @@
 package com.example.eventconnect.controller;
 
 import com.example.eventconnect.model.dto.EventCreateRequest;
+import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.service.EventAdminService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,17 @@ public class EventAdminController {
         this.eventAdminService = eventAdminService;
     }
 
-    @PostMapping("/event")
+    @PostMapping("/events")
     public void createEvent(@RequestBody EventCreateRequest eventCreateRequest, Principal principal) {
         eventAdminService.createEvent(eventCreateRequest, principal.getName());
+    }
+
+    @PutMapping("/events/{eventId}/participant/{participantId}")
+    public void updateParticipantStatus(@PathVariable Long eventId,
+                                        @PathVariable Long participantId,
+                                        @RequestBody ParticipationStatus participationStatus,
+                                        Principal principal) {
+        eventAdminService.updateParticipantStatus(eventId, participantId, principal.getName(), participationStatus);
     }
 
     @GetMapping("/ping")

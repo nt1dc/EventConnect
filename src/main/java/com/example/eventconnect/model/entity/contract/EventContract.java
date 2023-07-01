@@ -19,8 +19,6 @@ public class EventContract {
     @OneToOne
     @JoinColumn(name = "event_id")
     private Event event;
-    @OneToOne
-    @JoinColumn(name = "event_admin_id")
-    private User eventAdmin;
+    @Enumerated(EnumType.STRING)
     private EventContractStatus status;
 }

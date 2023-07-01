@@ -68,11 +68,8 @@ databaseChangeLog:
                   name: event_id
                   type: BIGINT
               - column:
-                  name: event_admin_id
-                  type: BIGINT
-              - column:
                   name: status
-                  type: INT
+                  type: VARCHAR(255)
             tableName: event_contract
   - changeSet:
       id: 1688200233116-4
@@ -224,17 +221,6 @@ databaseChangeLog:
             constraintName: FK_EVENTCONTRACT_ON_EVENT
             referencedColumnNames: id
             referencedTableName: event
-  - changeSet:
-      id: 1688200233116-12
-      author: nt1dc (generated)
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: event_admin_id
-            baseTableName: event_contract
-            constraintName: FK_EVENTCONTRACT_ON_EVENT_ADMIN
-            referencedColumnNames: id
-            referencedTableName: user
   - changeSet:
       id: 1688200233116-13
       author: nt1dc (generated)

@@ -1,5 +1,5 @@
 package com.example.eventconnect.model.entity;
 
 public enum EventStatus {
-        CREATED, APPROVED, REJECT
+    CREATED, APPROVED, REJECT, ENDED
 }

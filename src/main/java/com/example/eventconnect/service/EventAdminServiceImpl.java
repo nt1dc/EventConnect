@@ -2,32 +2,32 @@ package com.example.eventconnect.service;
 
 import com.example.eventconnect.model.dto.EventDto;
 import com.example.eventconnect.model.entity.Event;
-import com.example.eventconnect.model.entity.EventStatus;
 import com.example.eventconnect.model.entity.User;
+import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.participant.registration.EventRegistrationParams;
-import com.example.eventconnect.repository.EventRegistrationParamsRepository;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.service.auth.UserService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.eventconnect.model.entity.EventStatus.*;
 
 @Service
+@Transactional
 public class EventAdminServiceImpl implements EventAdminService {
     private final UserService userService;
     private final ModelMapper modelMapper = new ModelMapper();
     private final EventRepository eventRepository;
-    private final EventRegistrationParamsRepository eventRegistrationParamsRepository;
+    private final EventContractService eventContractService;
 
-    public EventAdminServiceImpl(UserService userService, EventRepository eventRepository, EventRegistrationParamsRepository eventRegistrationParamsRepository) {
+    public EventAdminServiceImpl(UserService userService, EventRepository eventRepository, EventContractService eventContractService) {
         this.userService = userService;
         this.eventRepository = eventRepository;
-        this.eventRegistrationParamsRepository = eventRegistrationParamsRepository;
+        this.eventContractService = eventContractService;
     }
 
 
@@ -46,7 +46,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         event.setEventAdmin(user);
         event.setEventRegistrationParams(eventRegistrationParams);
         event.setDescription(eventDto.getDescription());
-        event.setEventStatus(CREATED);
         eventRepository.save(event);
+        eventContractService.createContract(event, EventContractStatus.CREATED);
     }
 }

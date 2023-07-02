@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class EventContractResponse {
-    private EventInfoResponse event;
+    private Long id;
     private EventContractStatus status;
+    private EventInfoResponse event;
 }

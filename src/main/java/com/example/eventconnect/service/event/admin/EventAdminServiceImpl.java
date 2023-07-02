@@ -1,5 +1,7 @@
 package com.example.eventconnect.service.event.admin;
 
+import com.example.eventconnect.exception.ContractSignException;
+import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantAnwerWithQuestionDto;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
@@ -22,6 +24,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -101,7 +104,17 @@ public class EventAdminServiceImpl implements EventAdminService {
         if (eventAdmin.getId() != eventContract.getEvent().getEventAdmin().getId()) {
             throw new AccessDeniedException("this user is not admin event");
         }
+        if (eventContract.getStatus() != CREATED) {
+            throw new ContractSignException("error sign contract");
+        }
         eventContract.setStatus(SIGNED);
         eventContractService.saveContract(eventContract);
+    }
+
+    @Override
+    public List<EventContractResponse> getContracts(Long eventAdminID) {
+        return eventContractService.getAll().stream()
+                .filter(contract -> Objects.equals(contract.getEvent().getEventAdmin().getId(), eventAdminID))
+                .map((element) -> modelMapper.map(element, EventContractResponse.class)).toList();
     }
 }

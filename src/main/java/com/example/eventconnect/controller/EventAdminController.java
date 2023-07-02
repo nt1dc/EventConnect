@@ -1,5 +1,6 @@
 package com.example.eventconnect.controller;
 
+import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
@@ -38,8 +39,13 @@ public class EventAdminController {
         return eventAdminService.getEventParticipantsAnswers(eventId, principal.getName());
     }
 
-    @PutMapping("/events/{eventId}/contract/status")
-    public void singContract(@PathVariable Long eventId, @AuthenticationPrincipal User principalUser) {
-        eventAdminService.signContract(eventId, principalUser.getLogin());
+    @PutMapping("/contracts/{contractId}")
+    public void singContract(@PathVariable Long contractId, @AuthenticationPrincipal User principalUser) {
+        eventAdminService.signContract(contractId, principalUser.getLogin());
+    }
+
+    @GetMapping("/contracts")
+    public List<EventContractResponse> getContracts(@AuthenticationPrincipal User principalUser) {
+        return eventAdminService.getContracts(principalUser.getId());
     }
 }

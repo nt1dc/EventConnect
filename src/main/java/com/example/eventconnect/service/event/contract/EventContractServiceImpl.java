@@ -1,19 +1,15 @@
 package com.example.eventconnect.service.event.contract;
 
 import com.example.eventconnect.exception.EventContractNotFoundException;
-import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.event.Event;
-import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.repository.EventContractRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,8 +34,8 @@ public class EventContractServiceImpl implements EventContractService {
 
 
     @Override
-    public List<EventContractResponse> getAll() {
-        return eventContractRepository.findAll().stream().map((element) -> modelMapper.map(element, EventContractResponse.class)).collect(Collectors.toList());
+    public List<EventContract> getAll() {
+        return eventContractRepository.findAll();
     }
 
     @Override

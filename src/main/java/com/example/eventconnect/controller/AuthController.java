@@ -4,6 +4,7 @@ import com.example.eventconnect.model.dto.auth.AuthRequest;
 import com.example.eventconnect.model.dto.auth.AuthResponse;
 import com.example.eventconnect.model.dto.auth.RegisterRequest;
 import com.example.eventconnect.service.auth.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest registerRequest) {
+    public void register(@Valid @RequestBody RegisterRequest registerRequest) {
         authService.register(registerRequest);
     }
 

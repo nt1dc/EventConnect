@@ -33,7 +33,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh.expiration}")
     private long REFRESH_TOKEN_EXPIRATION;
 
-    public JwtTokenProvider(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService) {
+    public JwtTokenProvider(UserDetailsService userDetailsService) {
 
         this.userDetailsService = userDetailsService;
     }

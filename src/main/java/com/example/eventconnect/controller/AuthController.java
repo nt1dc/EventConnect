@@ -4,7 +4,10 @@ import com.example.eventconnect.model.dto.auth.AuthRequest;
 import com.example.eventconnect.model.dto.auth.AuthResponse;
 import com.example.eventconnect.model.dto.auth.RegisterRequest;
 import com.example.eventconnect.service.auth.AuthService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/auth")
@@ -26,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/token/refresh")
-    public String refresh(@RequestHeader(name = "Authorization") String token) {
-        return authService.generateRefreshTokenByAccess(token);
+    public String refresh(@RequestBody String refreshToken) {
+        return authService.generateRefreshTokenByAccess(refreshToken);
     }
 }

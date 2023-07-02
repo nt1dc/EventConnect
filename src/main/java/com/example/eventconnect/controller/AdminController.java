@@ -2,7 +2,7 @@ package com.example.eventconnect.controller;
 
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
-import com.example.eventconnect.service.EventContractService;
+import com.example.eventconnect.service.admin.AdminService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,18 +10,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-    private final EventContractService eventContractService;
+    private final AdminService adminService;
 
-    public AdminController(EventContractService eventContractService) {
-        this.eventContractService = eventContractService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @PutMapping("/events/contracts/{contractId}/status")
     public void updateContractStatus(@PathVariable Long contractId, @RequestBody EventContractStatus eventContractStatus) {
-        eventContractService.updateContractStatus(contractId, eventContractStatus);
+        adminService.updateContractStatus(contractId, eventContractStatus);
     }
     @GetMapping("/events/contracts")
     private List<EventContractResponse> getAllContracts(){
-        return eventContractService.getAll();
+        return adminService.getAllContracts();
     }
 }

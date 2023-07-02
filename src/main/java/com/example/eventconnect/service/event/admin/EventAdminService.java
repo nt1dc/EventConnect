@@ -1,4 +1,4 @@
-package com.example.eventconnect.service;
+package com.example.eventconnect.service.event.admin;
 
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
@@ -12,4 +12,5 @@ public interface EventAdminService {
     void updateParticipantStatus(Long eventId, Long participantId, String eventAdminLogin, ParticipationStatus id);
 
     List<ParticipantRegistrationResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName);
+    void signContract(Long contractId, String eventAdminLogin);
 }

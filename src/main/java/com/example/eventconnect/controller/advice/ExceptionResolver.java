@@ -1,5 +1,6 @@
 package com.example.eventconnect.controller.advice;
 
+import com.example.eventconnect.exception.EventContractNotFoundException;
 import com.example.eventconnect.exception.EventNotFoundException;
 import com.example.eventconnect.exception.UserAlreadyExistsException;
 import com.example.eventconnect.model.dto.Error;
@@ -41,6 +42,11 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         return new Error(ex.getMessage());
     }
 
+    @ExceptionHandler({EventContractNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Error handeEventContractNotFoundException(Exception e) {
+        return new Error(e.getMessage());
+    }
 
 
 }

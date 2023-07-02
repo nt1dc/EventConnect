@@ -2,7 +2,7 @@ package com.example.eventconnect.controller;
 
 
 import com.example.eventconnect.model.dto.event.EventInfoResponse;
-import com.example.eventconnect.service.EventService;
+import com.example.eventconnect.service.event.EventService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

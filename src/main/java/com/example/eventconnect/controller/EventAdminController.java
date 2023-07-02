@@ -3,7 +3,9 @@ package com.example.eventconnect.controller;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
-import com.example.eventconnect.service.EventAdminService;
+import com.example.eventconnect.model.entity.user.User;
+import com.example.eventconnect.service.event.admin.EventAdminService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -36,4 +38,8 @@ public class EventAdminController {
         return eventAdminService.getEventParticipantsAnswers(eventId, principal.getName());
     }
 
+    @PutMapping("/events/{eventId}/contract/status")
+    public void singContract(@PathVariable Long eventId, @AuthenticationPrincipal User principalUser) {
+        eventAdminService.signContract(eventId, principalUser.getLogin());
+    }
 }

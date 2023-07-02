@@ -1,15 +1,20 @@
-package com.example.eventconnect.service;
+package com.example.eventconnect.service.event.admin;
 
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantAnwerWithQuestionDto;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
+import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.event.Event;
+import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.User;
+import com.example.eventconnect.repository.EventContractRepository;
 import com.example.eventconnect.repository.EventParticipantRepository;
+import com.example.eventconnect.service.event.contract.EventContractService;
+import com.example.eventconnect.service.event.EventService;
 import com.example.eventconnect.service.auth.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -20,6 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.example.eventconnect.model.entity.contract.EventContractStatus.*;
+
 @Service
 @Transactional
 public class EventAdminServiceImpl implements EventAdminService {
@@ -29,7 +36,8 @@ public class EventAdminServiceImpl implements EventAdminService {
     private final EventService eventService;
     private final EventParticipantRepository eventParticipantRepository;
 
-    public EventAdminServiceImpl(UserService userService, EventContractService eventContractService, EventService eventService, EventParticipantRepository eventParticipantRepository) {
+    public EventAdminServiceImpl(UserService userService, EventContractService eventContractService, EventService eventService, EventParticipantRepository eventParticipantRepository,
+                                 EventContractRepository eventContractRepository) {
         this.userService = userService;
         this.eventContractService = eventContractService;
         this.eventService = eventService;
@@ -52,6 +60,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         event.setEventAdmin(user);
         event.setEventRegistrationParams(eventRegistrationParams);
         event.setDescription(eventCreateRequest.getDescription());
+        event.setEventStatus(EventStatus.CREATED);
         eventService.saveEvent(event);
         eventContractService.createContract(event, EventContractStatus.CREATED);
     }
@@ -83,5 +92,16 @@ public class EventAdminServiceImpl implements EventAdminService {
                                                 participantRegistrationParams.getUserAnswer()
                                         )).collect(Collectors.toSet()))).toList();
 
+    }
+
+    @Override
+    public void signContract(Long contractId, String eventAdminId) {
+        User eventAdmin = userService.getUserByLogin(eventAdminId);
+        EventContract eventContract = eventContractService.getEventContract(contractId);
+        if (eventAdmin.getId() != eventContract.getEvent().getEventAdmin().getId()) {
+            throw new AccessDeniedException("this user is not admin event");
+        }
+        eventContract.setStatus(SIGNED);
+        eventContractService.saveContract(eventContract);
     }
 }

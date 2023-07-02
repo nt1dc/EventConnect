@@ -1,5 +1,6 @@
-package com.example.eventconnect.service;
+package com.example.eventconnect.service.event.contract;
 
+import com.example.eventconnect.exception.EventContractNotFoundException;
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
@@ -34,16 +35,20 @@ public class EventContractServiceImpl implements EventContractService {
         eventContractRepository.save(eventContract);
     }
 
-    @Override
-    public void updateContractStatus(Long contractId, EventContractStatus eventContractStatus) {
-        EventContract eventContract = eventContractRepository.findById(contractId).orElseThrow(EntityNotFoundException::new);
-        eventContract.setStatus(eventContractStatus);
-        eventContract.getEvent().setEventStatus(EventStatus.valueOf(eventContractStatus.name()));
-        eventContractRepository.save(eventContract);
-    }
+
 
     @Override
     public List<EventContractResponse> getAll() {
         return eventContractRepository.findAll().stream().map((element) -> modelMapper.map(element, EventContractResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public EventContract getEventContract(Long eventContractID) {
+        return eventContractRepository.findById(eventContractID).orElseThrow(()-> new EventContractNotFoundException(eventContractID));
+    }
+
+    @Override
+    public void saveContract(EventContract eventContract) {
+        eventContractRepository.save(eventContract);
     }
 }

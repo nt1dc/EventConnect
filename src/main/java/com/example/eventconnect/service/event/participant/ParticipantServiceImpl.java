@@ -1,21 +1,17 @@
-package com.example.eventconnect.service;
+package com.example.eventconnect.service.event.participant;
 
-import com.example.eventconnect.exception.EventNotFoundException;
-import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
-import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParam;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.repository.EventParticipantRepository;
-import com.example.eventconnect.repository.EventRepository;
+import com.example.eventconnect.repository.UserRepository;
+import com.example.eventconnect.service.event.EventService;
 import com.example.eventconnect.service.auth.UserService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,30 +22,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
-public class EventServiceImpl implements EventService {
-    private final EventRepository eventRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+public class ParticipantServiceImpl implements ParticipantService {
+    private final EventService eventService;
     private final EventParticipantRepository eventParticipantRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
     private final UserService userService;
 
-    public EventServiceImpl(EventRepository eventRepository, EventParticipantRepository eventParticipantRepository, UserService userService) {
-        this.eventRepository = eventRepository;
+    public ParticipantServiceImpl(EventService eventService, EventParticipantRepository eventParticipantRepository,
+                                  UserRepository userRepository, UserService userService1) {
+        this.eventService = eventService;
         this.eventParticipantRepository = eventParticipantRepository;
-        this.userService = userService;
-    }
 
-    @Override
-    public List<EventInfoResponse> getAvailableEvents() {
-        return eventRepository.findAllByEventStatusIn(Set.of(EventStatus.APPROVED))
-                .stream()
-                .map((element) -> modelMapper.map(element, EventInfoResponse.class))
-                .collect(Collectors.toList());
+        this.userService = userService1;
     }
 
     @Override
     public List<EventRegistrationParamsResponse> getRegistrationParameters(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new)
+        return eventService.getEventById(eventId)
                 .getEventRegistrationParams()
                 .stream()
                 .map((element) -> modelMapper.map(element, EventRegistrationParamsResponse.class))
@@ -57,10 +46,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void registerParticipant(Long eventId, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto, String login) {
-        Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
-        User participantUser = userService.getUserByLogin(login);
-
+    public void registerParticipant(Long eventId, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto, String userLogin) {
+        User participantUser = userService.getUserByLogin(userLogin);
+        Event event = eventService.getApprovedEventById(eventId);
         if (eventParticipantRepository.existsByEventAndAndUser(event, participantUser)) {
             throw new IllegalStateException("Participant already registered");
         }
@@ -84,15 +72,6 @@ public class EventServiceImpl implements EventService {
         eventParticipantRepository.save(participant);
     }
 
-    @Override
-    public void saveEvent(Event event) {
-        eventRepository.save(event);
-    }
-
-    @Override
-    public Event getEventById(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("element with id:" + eventId + " not found"));
-    }
 
     private boolean checkIfAllParamsPresent(Event event, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {
         Set<Long> requiredParamIds = event.getEventRegistrationParams().stream()
@@ -130,5 +109,4 @@ public class EventServiceImpl implements EventService {
                 .participant(participant)
                 .build();
     }
-
 }

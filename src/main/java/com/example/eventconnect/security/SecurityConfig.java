@@ -1,6 +1,8 @@
 package com.example.eventconnect.security;
 
 import com.example.eventconnect.model.entity.user.RoleEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -23,7 +26,7 @@ public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
 
     private final JwtUserDetailsService jwtUserDetailsService;
-
+    private final AuthenticationEntryPoint authEntryPoint;
 
     private static final String AUTH_ENDPOINT = "/auth/**";
     private static final String ADMIN_ENDPOINT = "/admin/**";
@@ -32,9 +35,10 @@ public class SecurityConfig {
     private static final String EVENT_INFO_ENDPOINT = "/event";
 
 
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService) {
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService, @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint) {
         this.jwtTokenFilter = jwtTokenFilter;
         this.jwtUserDetailsService = jwtUserDetailsService;
+        this.authEntryPoint = authEntryPoint;
     }
 
 
@@ -45,7 +49,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .and()
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(EVENT_INFO_ENDPOINT).permitAll()
                         .requestMatchers(AUTH_ENDPOINT).permitAll()
@@ -54,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers(EVENT_ADMIN_ENDPOINT).hasAuthority(RoleEnum.EVENT_ADMIN.name())
                         .anyRequest().permitAll()
                 )
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                        exceptionHandlingConfigurer.authenticationEntryPoint(authEntryPoint))
                 .authenticationProvider(authenticationProvider());
 
         return http.build();

@@ -49,4 +49,11 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
     }
 
 
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Error handeException(Exception e) {
+        return new Error(e.getMessage());
+    }
+
+
 }

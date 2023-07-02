@@ -1,6 +1,8 @@
 package com.example.eventconnect.security;
 
 import com.example.eventconnect.model.entity.user.RoleEnum;
+import com.example.eventconnect.service.auth.UserService;
+import com.example.eventconnect.service.auth.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +26,7 @@ public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
 
-    private final JwtUserDetailsService jwtUserDetailsService;
+    private final UserServiceImpl detailService;
     private final AuthenticationEntryPoint authEntryPoint;
 
     private static final String AUTH_ENDPOINT = "/auth/**";
@@ -34,11 +36,11 @@ public class SecurityConfig {
     private static final String EVENT_INFO_ENDPOINT = "/event";
 
 
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserServiceImpl detailService
             , @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint
     ) {
         this.jwtTokenFilter = jwtTokenFilter;
-        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.detailService = detailService;
         this.authEntryPoint = authEntryPoint;
     }
 
@@ -73,7 +75,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(jwtUserDetailsService);
+        authProvider.setUserDetailsService(detailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

@@ -16,11 +16,11 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PutMapping("/events/contracts/{contractId}/status")
+    @PutMapping("/contracts/{contractId}/status")
     public void updateContractStatus(@PathVariable Long contractId, @RequestBody EventContractStatus eventContractStatus) {
         adminService.updateContractStatus(contractId, eventContractStatus);
     }
-    @GetMapping("/events/contracts")
+    @GetMapping("/contracts")
     private List<EventContractResponse> getAllContracts(){
         return adminService.getAllContracts();
     }

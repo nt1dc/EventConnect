@@ -29,7 +29,7 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         return new Error(ex.getMessage());
     }
 
-    @ExceptionHandler({EventNotFoundException.class})
+    @ExceptionHandler({EventNotFoundException.class, EventContractNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Error handleEventNotFoundException(Exception ex) {
         return new Error(ex.getMessage());
@@ -41,14 +41,6 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
     public Error handleConflictException(Exception ex) {
         return new Error(ex.getMessage());
     }
-
-    @ExceptionHandler({EventContractNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Error handeEventContractNotFoundException(Exception e) {
-        return new Error(e.getMessage());
-    }
-
-
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Error handeException(Exception e) {

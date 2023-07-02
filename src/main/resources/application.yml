@@ -9,7 +9,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   liquibase:
-#    enabled: false
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
   jpa:
@@ -21,10 +20,10 @@ jwt.header: Authorization
 jwt.secret: topsecrettopsecrettopsecrettopsecret
 jwt.access.expiration: 30000
 jwt.refresh.expiration: 1500
-
-
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE
+#
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE
 

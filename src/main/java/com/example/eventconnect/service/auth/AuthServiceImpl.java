@@ -61,4 +61,9 @@ public class AuthServiceImpl implements AuthService {
                 user.getRoles()
         );
     }
+
+    @Override
+    public String generateRefreshTokenByAccess(String token) {
+        return jwtTokenProvider.createAccessTokenByRefreshToken(token);
+    }
 }

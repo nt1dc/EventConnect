@@ -10,4 +10,5 @@ public interface AuthService {
 
     AuthResponse login(AuthRequest authRequest);
 
+    String generateRefreshTokenByAccess(String token);
 }

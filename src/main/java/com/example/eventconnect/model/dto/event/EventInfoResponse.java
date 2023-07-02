@@ -1,5 +1,6 @@
-package com.example.eventconnect.model.dto;
+package com.example.eventconnect.model.dto.event;
 
+import com.example.eventconnect.model.dto.UserInfoResponse;
 import com.example.eventconnect.model.entity.event.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 
-public class EventResponse {
+public class EventInfoResponse {
     private Long id;
     private String name;
     private String description;

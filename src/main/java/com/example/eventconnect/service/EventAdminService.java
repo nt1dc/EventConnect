@@ -1,7 +1,7 @@
 package com.example.eventconnect.service;
 
-import com.example.eventconnect.model.dto.EventCreateRequest;
-import com.example.eventconnect.model.dto.ParticipantAnswersResponse;
+import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
+import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public interface EventAdminService {
 
     void updateParticipantStatus(Long eventId, Long participantId, String eventAdminLogin, ParticipationStatus id);
 
-    List<ParticipantAnswersResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName);
+    List<ParticipantRegistrationResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName);
 }

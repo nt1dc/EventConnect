@@ -1,4 +1,4 @@
-package com.example.eventconnect.model.dto;
+package com.example.eventconnect.model.dto.event.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ParticipantAnswersResponse {
+public class ParticipantRegistrationResponse {
     private Long participantId;
     private String participantLogin;
     private Set<ParticipantAnwerWithQuestionDto> anwerWithQuestionDtoSet;

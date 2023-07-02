@@ -1,4 +1,4 @@
-package com.example.eventconnect.model.dto;
+package com.example.eventconnect.model.dto.event.create;
 
 
 import lombok.*;

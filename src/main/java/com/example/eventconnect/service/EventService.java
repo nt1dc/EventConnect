@@ -1,14 +1,14 @@
 package com.example.eventconnect.service;
 
-import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
-import com.example.eventconnect.model.dto.EventResponse;
-import com.example.eventconnect.model.dto.ParticipantEventParamDto;
+import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
+import com.example.eventconnect.model.dto.event.EventInfoResponse;
+import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
 
 import java.util.List;
 
 public interface EventService {
-    List<EventResponse> getAvailableEvents();
+    List<EventInfoResponse> getAvailableEvents();
 
     List<EventRegistrationParamsResponse> getRegistrationParameters(Long eventId);
 

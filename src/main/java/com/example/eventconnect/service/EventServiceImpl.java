@@ -1,8 +1,8 @@
 package com.example.eventconnect.service;
 
-import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
-import com.example.eventconnect.model.dto.EventResponse;
-import com.example.eventconnect.model.dto.ParticipantEventParamDto;
+import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
+import com.example.eventconnect.model.dto.event.EventInfoResponse;
+import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.model.entity.user.User;
@@ -39,10 +39,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResponse> getAvailableEvents() {
+    public List<EventInfoResponse> getAvailableEvents() {
         return eventRepository.findAllByEventStatusIn(Set.of(EventStatus.APPROVED))
                 .stream()
-                .map((element) -> modelMapper.map(element, EventResponse.class))
+                .map((element) -> modelMapper.map(element, EventInfoResponse.class))
                 .collect(Collectors.toList());
     }
 

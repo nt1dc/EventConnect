@@ -1,7 +1,7 @@
 package com.example.eventconnect.controller;
 
-import com.example.eventconnect.model.dto.EventCreateRequest;
-import com.example.eventconnect.model.dto.ParticipantAnswersResponse;
+import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
+import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.service.EventAdminService;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class EventAdminController {
     }
 
     @GetMapping("/events/{eventId}/participants/answers")
-    public List<ParticipantAnswersResponse> getParticipants(@PathVariable Long eventId, Principal principal) {
+    public List<ParticipantRegistrationResponse> getParticipants(@PathVariable Long eventId, Principal principal) {
         return eventAdminService.getEventParticipantsAnswers(eventId, principal.getName());
     }
 

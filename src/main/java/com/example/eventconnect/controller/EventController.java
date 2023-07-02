@@ -1,7 +1,7 @@
 package com.example.eventconnect.controller;
 
 
-import com.example.eventconnect.model.dto.EventResponse;
+import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.service.EventService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class EventController {
     }
 
     @GetMapping("/")
-    public List<EventResponse> getAvailableEvents() {
+    public List<EventInfoResponse> getAvailableEvents() {
         return eventService.getAvailableEvents();
     }
 }

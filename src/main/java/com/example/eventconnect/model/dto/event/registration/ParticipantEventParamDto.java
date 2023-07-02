@@ -1,4 +1,4 @@
-package com.example.eventconnect.model.dto;
+package com.example.eventconnect.model.dto.event.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

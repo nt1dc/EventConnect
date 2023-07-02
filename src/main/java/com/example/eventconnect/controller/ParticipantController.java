@@ -1,7 +1,7 @@
 package com.example.eventconnect.controller;
 
-import com.example.eventconnect.model.dto.EventRegistrationParamsResponse;
-import com.example.eventconnect.model.dto.ParticipantEventParamDto;
+import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
+import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.service.EventService;
 import org.springframework.web.bind.annotation.*;
 

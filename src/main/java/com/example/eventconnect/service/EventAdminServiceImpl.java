@@ -1,8 +1,8 @@
 package com.example.eventconnect.service;
 
-import com.example.eventconnect.model.dto.EventCreateRequest;
-import com.example.eventconnect.model.dto.ParticipantAnswersResponse;
-import com.example.eventconnect.model.dto.ParticipantAnwerWithQuestionDto;
+import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
+import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
+import com.example.eventconnect.model.dto.event.registration.ParticipantAnwerWithQuestionDto;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
@@ -67,15 +67,16 @@ public class EventAdminServiceImpl implements EventAdminService {
     }
 
     @Override
-    public List<ParticipantAnswersResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName) {
+    public List<ParticipantRegistrationResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName) {
         Event event = eventService.getEventById(eventId);
         return event.getParticipants().stream().map(
-                participant -> new ParticipantAnswersResponse(
+                participant -> new ParticipantRegistrationResponse(
                         participant.getUser().getId(),
                         participant.getUser().getLogin(),
                         participant.getRegistrationParams()
                                 .stream().map(participantRegistrationParams ->
                                         new ParticipantAnwerWithQuestionDto(
+                                                participantRegistrationParams.getEventRegistrationParam().getId(),
                                                 participantRegistrationParams.getEventRegistrationParam().getName(),
                                                 participantRegistrationParams.getEventRegistrationParam().getDescription(),
                                                 participantRegistrationParams.getUserAnswer()

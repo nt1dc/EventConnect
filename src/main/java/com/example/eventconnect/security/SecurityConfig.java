@@ -1,7 +1,6 @@
 package com.example.eventconnect.security;
 
 import com.example.eventconnect.model.entity.user.RoleEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +34,9 @@ public class SecurityConfig {
     private static final String EVENT_INFO_ENDPOINT = "/event";
 
 
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService, @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint) {
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtUserDetailsService jwtUserDetailsService
+            , @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint
+    ) {
         this.jwtTokenFilter = jwtTokenFilter;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.authEntryPoint = authEntryPoint;

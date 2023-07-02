@@ -1,5 +1,6 @@
 package com.example.eventconnect.service;
 
+import com.example.eventconnect.exception.EventNotFoundException;
 import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
@@ -90,7 +91,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event getEventById(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
+        return eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("element with id:" + eventId + " not found"));
     }
 
     private boolean checkIfAllParamsPresent(Event event, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto) {

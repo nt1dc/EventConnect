@@ -13,6 +13,7 @@ import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.service.auth.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         User eventAdmin = userService.getUserByLogin(eventAdminLogin);
         Event event = eventService.getEventById(eventId);
         boolean equals = event.getEventAdmin().equals(eventAdmin);
-        if (!equals) throw new RuntimeException("not owner");
+        if (!equals) throw new AccessDeniedException("not owner");
         Participant participant = eventParticipantRepository.findByEventAndAndUser(event, eventAdmin);
         participant.setParticipationStatus(participationStatus);
         eventParticipantRepository.save(participant);

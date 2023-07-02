@@ -1,5 +1,6 @@
 package com.example.eventconnect;
 
+import com.example.eventconnect.model.dto.auth.AuthResponse;
 import com.example.eventconnect.model.entity.user.Role;
 import com.example.eventconnect.model.entity.user.RoleEnum;
 import com.example.eventconnect.model.entity.user.User;
@@ -14,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.util.Set;
@@ -36,6 +40,7 @@ public class AuthControllerIntegrationTest extends TestContainerTest {
     private final String userValidPassword = "validPassword";
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @ParameterizedTest
     @MethodSource("invalidRegistrationData")
@@ -72,7 +77,6 @@ public class AuthControllerIntegrationTest extends TestContainerTest {
 
     @Test
     public void validLogin() throws Exception {
-        System.out.println(userRepository.findAll().size());
         saveValidUser();
         String userLoginJson = "{\"login\":\"" + userValidLogin + "\",\"password\":\"" + userValidPassword + "\"}";
         mvc.perform(post("/auth/login")
@@ -101,6 +105,24 @@ public class AuthControllerIntegrationTest extends TestContainerTest {
                 .content(userLoginJson)).andDo(
                 print()
         ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void refreshToken() throws Exception {
+        saveValidUser();
+        String userLoginJson = "{\"login\":\"" + userValidLogin + "\",\"password\":\"" + userValidPassword + "\"}";
+        MvcResult result = mvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userLoginJson)).andDo(
+                print()
+        ).andExpect(status().isOk()).andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+
+        AuthResponse authResponse = objectMapper.readValue(contentAsString, AuthResponse.class);
+        mvc.perform(post("/auth/token/refresh")
+                .content(authResponse.getRefreshToken())).andDo(
+                print()
+        ).andExpect(status().isOk()).andReturn();
     }
 
     private void saveValidUser() {

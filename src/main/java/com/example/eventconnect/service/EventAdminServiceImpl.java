@@ -1,14 +1,14 @@
 package com.example.eventconnect.service;
 
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
-import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.dto.event.registration.ParticipantAnwerWithQuestionDto;
-import com.example.eventconnect.model.entity.event.Event;
-import com.example.eventconnect.model.entity.user.User;
+import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
-import com.example.eventconnect.model.entity.participant.Participant;
+import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
+import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.service.auth.UserService;
 import jakarta.transaction.Transactional;

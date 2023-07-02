@@ -1,16 +1,16 @@
 package com.example.eventconnect.service;
 
 import com.example.eventconnect.exception.EventNotFoundException;
-import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.event.EventInfoResponse;
+import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.event.EventStatus;
-import com.example.eventconnect.model.entity.user.User;
-import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParam;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
+import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.service.auth.UserService;

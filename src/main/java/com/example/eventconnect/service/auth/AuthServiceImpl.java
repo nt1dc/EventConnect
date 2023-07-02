@@ -10,7 +10,6 @@ import com.example.eventconnect.repository.RoleRepository;
 import com.example.eventconnect.repository.UserRepository;
 import com.example.eventconnect.security.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

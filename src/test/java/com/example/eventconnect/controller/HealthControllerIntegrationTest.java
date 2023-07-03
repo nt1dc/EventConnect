@@ -1,4 +1,4 @@
-package com.example.eventconnect;
+package com.example.eventconnect.controller;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

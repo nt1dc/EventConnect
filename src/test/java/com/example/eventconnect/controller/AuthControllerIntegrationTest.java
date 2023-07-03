@@ -1,5 +1,6 @@
-package com.example.eventconnect;
+package com.example.eventconnect.controller;
 
+import com.example.eventconnect.TestContainerTest;
 import com.example.eventconnect.model.dto.auth.AuthResponse;
 import com.example.eventconnect.model.entity.user.Role;
 import com.example.eventconnect.model.entity.user.RoleEnum;

@@ -5,6 +5,7 @@ import com.example.eventconnect.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -29,5 +30,5 @@ public class Participant {
     @Enumerated(value = EnumType.STRING)
     private ParticipationStatus participationStatus;
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ParticipantRegistrationParam> registrationParams;
+    private Set<ParticipantRegistrationParam> registrationParams = new HashSet<>();
 }

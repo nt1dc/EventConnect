@@ -1,6 +1,7 @@
 package com.example.eventconnect.service.event.admin;
 
 import com.example.eventconnect.exception.ContractSignException;
+import com.example.eventconnect.exception.ParticipantNotFoundException;
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
 import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
@@ -40,8 +41,7 @@ public class EventAdminServiceImpl implements EventAdminService {
     private final EventService eventService;
     private final EventParticipantRepository eventParticipantRepository;
 
-    public EventAdminServiceImpl(UserService userService, EventContractService eventContractService, EventService eventService, EventParticipantRepository eventParticipantRepository,
-                                 EventContractRepository eventContractRepository) {
+    public EventAdminServiceImpl(UserService userService, EventContractService eventContractService, EventService eventService, EventParticipantRepository eventParticipantRepository) {
         this.userService = userService;
         this.eventContractService = eventContractService;
         this.eventService = eventService;
@@ -75,7 +75,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         Event event = eventService.getEventById(eventId);
         boolean equals = event.getEventAdmin().equals(eventAdmin);
         if (!equals) throw new AccessDeniedException("not owner");
-        Participant participant = eventParticipantRepository.findByEventAndAndUser(event, eventAdmin);
+        Participant participant = eventParticipantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.setParticipationStatus(participationStatus);
         eventParticipantRepository.save(participant);
     }
@@ -85,7 +85,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         Event event = eventService.getEventById(eventId);
         return event.getParticipants().stream().map(
                 participant -> new ParticipantRegistrationResponse(
-                        participant.getUser().getId(),
+                        participant.getId(),
                         participant.getUser().getLogin(),
                         participant.getRegistrationParams()
                                 .stream().map(participantRegistrationParams ->
@@ -102,7 +102,7 @@ public class EventAdminServiceImpl implements EventAdminService {
     public void signContract(Long contractId, String eventAdminId) {
         User eventAdmin = userService.getUserByLogin(eventAdminId);
         EventContract eventContract = eventContractService.getEventContract(contractId);
-        if (eventAdmin.getId() != eventContract.getEvent().getEventAdmin().getId()) {
+        if (!Objects.equals(eventAdmin.getId(), eventContract.getEvent().getEventAdmin().getId())) {
             throw new AccessDeniedException("this user is not admin event");
         }
         if (eventContract.getStatus() != CREATED) {

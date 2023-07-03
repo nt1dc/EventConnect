@@ -2,22 +2,26 @@ package com.example.eventconnect.controller;
 
 import com.example.eventconnect.TestContainerTest;
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
+import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.event.EventStatus;
+import com.example.eventconnect.model.entity.participant.Participant;
+import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.Role;
 import com.example.eventconnect.model.entity.user.RoleEnum;
 import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.repository.EventContractRepository;
+import com.example.eventconnect.repository.EventParticipantRepository;
 import com.example.eventconnect.repository.EventRepository;
 import com.example.eventconnect.repository.UserRepository;
 import com.example.eventconnect.security.JwtTokenProvider;
+import com.example.eventconnect.service.admin.AdminService;
+import com.example.eventconnect.service.event.participant.ParticipantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 class EventAdminControllerTest extends TestContainerTest {
@@ -48,6 +53,11 @@ class EventAdminControllerTest extends TestContainerTest {
     private EventRepository eventRepository;
     @Autowired
     private EventContractRepository eventContractRepository;
+    @Autowired
+    private ParticipantService participantService;
+
+    @Autowired
+    private AdminService adminService;
 
     private final String eventAdminLogin = "enet@admin.com";
     private final String eventAdminPassword = "eventAdminPassword";
@@ -58,7 +68,7 @@ class EventAdminControllerTest extends TestContainerTest {
     @Test
     @Order(1)
     public void createEvent() throws Exception {
-        registerEventAdmin();
+        saveUser(eventAdminLogin, eventAdminPassword, RoleEnum.EVENT_ADMIN);
         eventAdminAccessToken = generateJwtAccessToken();
         mvc.perform(post("/events")
                 .header("Authorization", "Bearer " + eventAdminAccessToken)
@@ -73,9 +83,9 @@ class EventAdminControllerTest extends TestContainerTest {
         Assertions.assertEquals(1, event.getEventRegistrationParams().size());
         List<EventContract> contracts = eventContractRepository.findAll();
         Assertions.assertEquals(1, contracts.size());
-        EventContract eventContract = contracts.get(0);
-        Assertions.assertEquals(eventContract.getEvent().getId(), event.getId());
-        Assertions.assertEquals(EventContractStatus.CREATED, eventContract.getStatus());
+        EventContract contract = contracts.get(0);
+        Assertions.assertEquals(contract.getEvent().getId(), event.getId());
+        Assertions.assertEquals(EventContractStatus.CREATED, contract.getStatus());
         eventId = event.getId();
     }
 
@@ -91,7 +101,9 @@ class EventAdminControllerTest extends TestContainerTest {
 
         EventContractResponse[] contracts = objectMapper.readValue(contentAsString, EventContractResponse[].class);
         Assertions.assertEquals(1, contracts.length);
-        Assertions.assertEquals(eventId, contracts[0].getEvent().getId());
+        EventContractResponse contract = contracts[0];
+        Assertions.assertEquals(eventId, contract.getEvent().getId());
+        Assertions.assertEquals(EventContractStatus.CREATED, contract.getStatus());
     }
 
     @Test
@@ -106,9 +118,14 @@ class EventAdminControllerTest extends TestContainerTest {
         Assertions.assertEquals(EventContractStatus.SIGNED, byId.getStatus());
     }
 
+
     @Test
     @Order(4)
     public void getEventParticipantsAnswers() throws Exception {
+        adminService.updateContractStatus(1L, EventContractStatus.APPROVED);
+        saveUser("participant@event.com", "password", RoleEnum.PARTICIPANT);
+        participantService.registerParticipant(1L, List.of(new ParticipantEventParamDto(1L, "answer")), "participant@event.com");
+
         eventAdminAccessToken = generateJwtAccessToken();
         MockHttpServletResponse response = mvc.perform(get("/events/1/participants/answers")
                         .header("Authorization", "Bearer " + eventAdminAccessToken)).andDo(
@@ -116,7 +133,21 @@ class EventAdminControllerTest extends TestContainerTest {
                 .andExpect(status().isOk()).andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         ParticipantRegistrationResponse[] contracts = objectMapper.readValue(contentAsString, ParticipantRegistrationResponse[].class);
-        Assertions.assertEquals(0, contracts.length);
+        Assertions.assertEquals(1, contracts.length);
+    }
+
+    @Test
+    @Order(5)
+    public void updateParticipantStatus() throws Exception {
+        eventAdminAccessToken = generateJwtAccessToken();
+        mvc.perform(put("/events/1/participants/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("\"APPROVED\"")
+                        .header("Authorization", "Bearer " + eventAdminAccessToken)).andDo(
+                        print())
+                .andExpect(status().isOk());
+        Participant participant = eventParticipantRepository.findById(1L).get();
+        Assertions.assertEquals(ParticipationStatus.APPROVED,participant.getParticipationStatus());
     }
 
 
@@ -132,12 +163,15 @@ class EventAdminControllerTest extends TestContainerTest {
                 }
               ]
             }""";
+    @Autowired
+    private EventParticipantRepository eventParticipantRepository;
 
-    private void registerEventAdmin() {
+
+    private void saveUser(String login, String password, RoleEnum roleEnum) {
         userRepository.save(User.builder()
-                .login(eventAdminLogin)
-                .password(passwordEncoder.encode(eventAdminPassword))
-                .roles(Set.of(new Role(RoleEnum.EVENT_ADMIN))).build());
+                .login(login)
+                .password(passwordEncoder.encode(password))
+                .roles(Set.of(new Role(roleEnum))).build());
     }
 
     private String generateJwtAccessToken() {

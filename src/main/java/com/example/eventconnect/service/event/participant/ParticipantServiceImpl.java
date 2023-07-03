@@ -11,9 +11,9 @@ import com.example.eventconnect.model.entity.participant.ParticipantRegistration
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.User;
 import com.example.eventconnect.repository.EventParticipantRepository;
-import com.example.eventconnect.repository.UserRepository;
-import com.example.eventconnect.service.event.EventService;
 import com.example.eventconnect.service.auth.UserService;
+import com.example.eventconnect.service.event.EventService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ParticipantServiceImpl implements ParticipantService {
     private final EventService eventService;
     private final EventParticipantRepository eventParticipantRepository;

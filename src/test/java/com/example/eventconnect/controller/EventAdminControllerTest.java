@@ -60,7 +60,7 @@ class EventAdminControllerTest extends TestContainerTest {
     public void createEvent() throws Exception {
         registerEventAdmin();
         eventAdminAccessToken = generateJwtAccessToken();
-        mvc.perform(post("/event-admin/events")
+        mvc.perform(post("/events")
                 .header("Authorization", "Bearer " + eventAdminAccessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(eventJson)).andDo(
@@ -110,7 +110,7 @@ class EventAdminControllerTest extends TestContainerTest {
     @Order(4)
     public void getEventParticipantsAnswers() throws Exception {
         eventAdminAccessToken = generateJwtAccessToken();
-        MockHttpServletResponse response = mvc.perform(get("/event-admin/events/1/participants/answers")
+        MockHttpServletResponse response = mvc.perform(get("/events/1/participants/answers")
                         .header("Authorization", "Bearer " + eventAdminAccessToken)).andDo(
                         print())
                 .andExpect(status().isOk()).andReturn().getResponse();

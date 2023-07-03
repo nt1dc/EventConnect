@@ -18,9 +18,9 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<EventInfoResponse> getAvailableEvents() {
-        return eventService.getAvailableEvents();
+        return eventService.getEvents();
     }
 }
 

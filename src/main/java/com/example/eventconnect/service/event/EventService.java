@@ -6,7 +6,7 @@ import com.example.eventconnect.model.entity.event.Event;
 import java.util.List;
 
 public interface EventService {
-    List<EventInfoResponse> getAvailableEvents();
+    List<EventInfoResponse> getEvents();
 
     void saveEvent(Event event);
     Event getEventById(Long eventId);

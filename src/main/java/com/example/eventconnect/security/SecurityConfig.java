@@ -1,11 +1,11 @@
 package com.example.eventconnect.security;
 
 import com.example.eventconnect.model.entity.user.RoleEnum;
-import com.example.eventconnect.service.auth.UserService;
 import com.example.eventconnect.service.auth.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -30,10 +30,11 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authEntryPoint;
 
     private static final String AUTH_ENDPOINT = "/auth/**";
+    private static final String EVENT_ENDPOINT = "/event";
+    private static final String PARTICIPANT_REGISTRATION_ENDPOINT = "/events/*/registration";
     private static final String ADMIN_ENDPOINT = "/admin/**";
-    private static final String PARTICIPANT_ENDPOINT = "/participant/**";
     private static final String EVENT_ADMIN_ENDPOINT = "/event-admin/**";
-    private static final String EVENT_INFO_ENDPOINT = "/event";
+    private static final String EVENT_ADMIN_EVENT_PARTICIPANTS_ENDPOINT = "/event/*/participants";
 
 
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserServiceImpl detailService
@@ -53,9 +54,11 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(EVENT_INFO_ENDPOINT).permitAll()
+                        .requestMatchers(HttpMethod.GET, EVENT_ENDPOINT).permitAll()
+                        .requestMatchers(HttpMethod.POST, EVENT_ENDPOINT).hasAuthority(RoleEnum.EVENT_ADMIN.name())
+                        .requestMatchers(EVENT_ADMIN_EVENT_PARTICIPANTS_ENDPOINT).hasAuthority(RoleEnum.EVENT_ADMIN.name())
                         .requestMatchers(AUTH_ENDPOINT).permitAll()
-                        .requestMatchers(PARTICIPANT_ENDPOINT).hasAuthority(RoleEnum.PARTICIPANT.name())
+                        .requestMatchers(PARTICIPANT_REGISTRATION_ENDPOINT).hasAuthority(RoleEnum.PARTICIPANT.name())
                         .requestMatchers(ADMIN_ENDPOINT).hasAuthority(RoleEnum.ADMIN.name())
                         .requestMatchers(EVENT_ADMIN_ENDPOINT).hasAuthority(RoleEnum.EVENT_ADMIN.name())
                         .anyRequest().permitAll()

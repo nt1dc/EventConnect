@@ -31,7 +31,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final UserService userService;
 
     public ParticipantServiceImpl(EventService eventService, EventParticipantRepository eventParticipantRepository,
-                                  UserRepository userRepository, UserService userService1) {
+                                  UserService userService1) {
         this.eventService = eventService;
         this.eventParticipantRepository = eventParticipantRepository;
 
@@ -40,6 +40,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public List<EventRegistrationParamsResponse> getRegistrationParameters(Long eventId) {
+        Event event = eventService.getEventById(eventId);
+        if (event.getEventStatus() != EventStatus.APPROVED) throw new EventNotApprovedException("event not approved");
         return eventService.getEventById(eventId)
                 .getEventRegistrationParams()
                 .stream()

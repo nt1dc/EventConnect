@@ -3,14 +3,12 @@ package com.example.eventconnect.service.event;
 import com.example.eventconnect.exception.EventNotFoundException;
 import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.entity.event.Event;
-import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.repository.EventRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +22,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventInfoResponse> getAvailableEvents() {
-        return eventRepository.findAllByEventStatusIn(Set.of(EventStatus.APPROVED))
+    public List<EventInfoResponse> getEvents() {
+        return eventRepository.findAll()
                 .stream()
                 .map((element) -> modelMapper.map(element, EventInfoResponse.class))
                 .collect(Collectors.toList());

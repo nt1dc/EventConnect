@@ -22,7 +22,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventInfoResponse> getEvents() {
+    public List<EventInfoResponse> getEventsInfo() {
         return eventRepository.findAll()
                 .stream()
                 .map((element) -> modelMapper.map(element, EventInfoResponse.class))
@@ -39,7 +39,6 @@ public class EventServiceImpl implements EventService {
     public Event getEventById(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("element with id:" + eventId + " not found"));
     }
-
 
 
     @Override

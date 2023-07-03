@@ -16,7 +16,7 @@ public interface EventAdminService {
     List<ParticipantRegistrationResponse> getEventParticipantsAnswers(Long eventId, String evenAdminName);
     void signContract(Long contractId, String eventAdminLogin);
 
-    List<EventContractResponse> getContracts(Long eventAdminID);
+    List<EventContractResponse> getContractsByEventAdminLogin(Long eventAdminID);
 
-    List<EventInfoResponse> getEvents(String eventAdminLogin);
+    List<EventInfoResponse> getEventsByEventAdminLogin(String eventAdminLogin);
 }

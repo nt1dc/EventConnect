@@ -113,16 +113,15 @@ public class EventAdminServiceImpl implements EventAdminService {
     }
 
     @Override
-    public List<EventContractResponse> getContracts(Long eventAdminID) {
+    public List<EventContractResponse> getContractsByEventAdminLogin(Long eventAdminID) {
         return eventContractService.getAll().stream()
                 .filter(contract -> Objects.equals(contract.getEvent().getEventAdmin().getId(), eventAdminID))
                 .map((element) -> modelMapper.map(element, EventContractResponse.class)).toList();
     }
 
     @Override
-    public List<EventInfoResponse> getEvents(String eventAdminId) {
-        return eventService.getAllEvents().stream()
-                .filter(event -> Objects.equals(event.getEventAdmin().getLogin(), eventAdminId))
-                .map((element) -> modelMapper.map(element, EventInfoResponse.class)).toList();
+    public List<EventInfoResponse> getEventsByEventAdminLogin(String eventAdminLogin) {
+        return eventService.getAllEvents().stream().filter(event -> Objects.equals(event.getEventAdmin().getLogin(), eventAdminLogin)).
+                map((element) -> modelMapper.map(element, EventInfoResponse.class)).toList();
     }
 }

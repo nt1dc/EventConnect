@@ -1,6 +1,7 @@
 package com.example.eventconnect.controller;
 
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
+import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
@@ -46,6 +47,11 @@ public class EventAdminController {
 
     @GetMapping("/event-admin/contracts")
     public List<EventContractResponse> getContracts(@AuthenticationPrincipal User principalUser) {
-        return eventAdminService.getContracts(principalUser.getId());
+        return eventAdminService.getContractsByEventAdminLogin(principalUser.getId());
+    }
+
+    @GetMapping("/event-admin/events")
+    public List<EventInfoResponse> getEvents(@AuthenticationPrincipal User principalUser) {
+        return eventAdminService.getEventsByEventAdminLogin(principalUser.getLogin());
     }
 }

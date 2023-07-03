@@ -1,6 +1,5 @@
 package com.example.eventconnect.model.dto.event;
 
-import com.example.eventconnect.model.dto.UserInfoResponse;
 import com.example.eventconnect.model.entity.event.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +16,5 @@ public class EventInfoResponse {
     private String name;
     private String description;
     private EventStatus eventStatus;
-    private UserInfoResponse eventAdmin;
+    private String eventAdminLogin;
 }

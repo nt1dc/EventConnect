@@ -42,8 +42,12 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("element with id:" + eventId + " not found"));
     }
 
+
+
     @Override
-    public Event getApprovedEventById(Long eventId) {
-        return eventRepository.findByIdAndEventStatus(eventId, EventStatus.APPROVED).orElseThrow(() -> new EventNotFoundException("available element with id:" + eventId + " not found"));
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
     }
+
+
 }

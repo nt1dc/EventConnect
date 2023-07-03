@@ -1,9 +1,6 @@
 package com.example.eventconnect.controller.advice;
 
-import com.example.eventconnect.exception.EventContractNotFoundException;
-import com.example.eventconnect.exception.EventNotFoundException;
-import com.example.eventconnect.exception.UserAlreadyExistsException;
-import com.example.eventconnect.exception.UserNotFoundException;
+import com.example.eventconnect.exception.*;
 import com.example.eventconnect.model.dto.Error;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
@@ -34,7 +31,7 @@ public class ExceptionResolver {
         return new Error(ex.getMessage());
     }
 
-    @ExceptionHandler({EventNotFoundException.class, EventContractNotFoundException.class})
+    @ExceptionHandler({EventNotFoundException.class, EventContractNotFoundException.class, EventNotApprovedException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Error handleEventNotFoundException(Exception ex) {
         return new Error(ex.getMessage());

@@ -1,8 +1,10 @@
 package com.example.eventconnect.service.event.participant;
 
+import com.example.eventconnect.exception.EventNotApprovedException;
 import com.example.eventconnect.model.dto.event.registration.EventRegistrationParamsResponse;
 import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
+import com.example.eventconnect.model.entity.event.EventStatus;
 import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParam;
@@ -48,7 +50,8 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     public void registerParticipant(Long eventId, List<ParticipantEventParamDto> participantEventPRegistrationParamsDtoDto, String userLogin) {
         User participantUser = userService.getUserByLogin(userLogin);
-        Event event = eventService.getApprovedEventById(eventId);
+        Event event = eventService.getEventById(eventId);
+        if (event.getEventStatus() != EventStatus.APPROVED) throw new EventNotApprovedException("event not approved");
         if (eventParticipantRepository.existsByEventAndAndUser(event, participantUser)) {
             throw new IllegalStateException("Participant already registered");
         }

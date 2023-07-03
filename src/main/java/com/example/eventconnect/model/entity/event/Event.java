@@ -26,7 +26,7 @@ public class Event {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_admin_id")
     private User eventAdmin;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<EventRegistrationParam> eventRegistrationParams = new HashSet<>();
     @Enumerated(value = EnumType.STRING)
     private EventStatus eventStatus;

@@ -2,6 +2,7 @@ package com.example.eventconnect.service.event.admin;
 
 import com.example.eventconnect.exception.ContractSignException;
 import com.example.eventconnect.model.dto.contract.EventContractResponse;
+import com.example.eventconnect.model.dto.event.EventInfoResponse;
 import com.example.eventconnect.model.dto.event.create.EventCreateRequest;
 import com.example.eventconnect.model.dto.event.registration.ParticipantAnwerWithQuestionDto;
 import com.example.eventconnect.model.dto.event.registration.ParticipantRegistrationResponse;
@@ -116,5 +117,12 @@ public class EventAdminServiceImpl implements EventAdminService {
         return eventContractService.getAll().stream()
                 .filter(contract -> Objects.equals(contract.getEvent().getEventAdmin().getId(), eventAdminID))
                 .map((element) -> modelMapper.map(element, EventContractResponse.class)).toList();
+    }
+
+    @Override
+    public List<EventInfoResponse> getEvents(String eventAdminId) {
+        return eventService.getAllEvents().stream()
+                .filter(event -> Objects.equals(event.getEventAdmin().getLogin(), eventAdminId))
+                .map((element) -> modelMapper.map(element, EventInfoResponse.class)).toList();
     }
 }

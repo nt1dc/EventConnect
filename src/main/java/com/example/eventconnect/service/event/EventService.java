@@ -10,5 +10,7 @@ public interface EventService {
 
     void saveEvent(Event event);
     Event getEventById(Long eventId);
-    Event getApprovedEventById(Long eventId);
+
+
+    List<Event> getAllEvents();
 }

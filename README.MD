@@ -1,6 +1,6 @@
 ## EventConnect
 
-#### program started requires docker!!!
+## application start requires docker!!!
 ## Run
 ```shell
 docker-compose up
@@ -18,3 +18,6 @@ http://localhost:8080/api/swagger-ui/index.html
 jacoco test report
 
 current coverage 60%
+## DB
+![diagram](docs/databaDiagram.png)
+

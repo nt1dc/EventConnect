@@ -15,11 +15,10 @@ import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.User;
-import com.example.eventconnect.repository.EventContractRepository;
 import com.example.eventconnect.repository.EventParticipantRepository;
-import com.example.eventconnect.service.event.contract.EventContractService;
-import com.example.eventconnect.service.event.EventService;
 import com.example.eventconnect.service.auth.UserService;
+import com.example.eventconnect.service.event.EventService;
+import com.example.eventconnect.service.event.contract.EventContractService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,7 +29,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.example.eventconnect.model.entity.contract.EventContractStatus.*;
+import static com.example.eventconnect.model.entity.contract.EventContractStatus.CREATED;
+import static com.example.eventconnect.model.entity.contract.EventContractStatus.SIGNED;
 
 @Service
 @Transactional

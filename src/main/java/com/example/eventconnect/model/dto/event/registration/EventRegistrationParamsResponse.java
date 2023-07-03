@@ -1,6 +1,6 @@
 package com.example.eventconnect.model.dto.event.registration;
 
-import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.event.EventRegistrationParam;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

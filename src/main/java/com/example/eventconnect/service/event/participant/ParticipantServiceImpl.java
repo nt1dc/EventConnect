@@ -5,7 +5,7 @@ import com.example.eventconnect.model.dto.event.registration.EventRegistrationPa
 import com.example.eventconnect.model.dto.event.registration.ParticipantEventParamDto;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.event.EventStatus;
-import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.event.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipantRegistrationParam;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;

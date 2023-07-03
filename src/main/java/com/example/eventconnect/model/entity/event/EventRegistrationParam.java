@@ -1,6 +1,5 @@
-package com.example.eventconnect.model.entity.participant;
+package com.example.eventconnect.model.entity.event;
 
-import com.example.eventconnect.model.entity.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
 

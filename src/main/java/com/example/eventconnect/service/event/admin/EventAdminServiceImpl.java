@@ -11,7 +11,7 @@ import com.example.eventconnect.model.entity.contract.EventContract;
 import com.example.eventconnect.model.entity.contract.EventContractStatus;
 import com.example.eventconnect.model.entity.event.Event;
 import com.example.eventconnect.model.entity.event.EventStatus;
-import com.example.eventconnect.model.entity.participant.EventRegistrationParam;
+import com.example.eventconnect.model.entity.event.EventRegistrationParam;
 import com.example.eventconnect.model.entity.participant.Participant;
 import com.example.eventconnect.model.entity.participant.ParticipationStatus;
 import com.example.eventconnect.model.entity.user.User;
